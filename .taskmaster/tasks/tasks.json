@@ -1,0 +1,998 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Set up Next.js 14 Application with Tailwind and shadcn/ui",
+        "description": "Initialize the Next.js 14 project with App Router, integrate Tailwind CSS for styling, and set up shadcn/ui component library with Portuguese localization support.",
+        "details": "1. Create a new Next.js 14 project using `create-next-app`\n2. Configure App Router for routing\n3. Install and configure Tailwind CSS\n4. Set up shadcn/ui component library\n5. Configure Portuguese localization\n6. Set up dark/light mode support\n7. Create basic layout components (Header, Footer, Sidebar)\n8. Configure accessibility compliance features\n9. Set up responsive design breakpoints for mobile optimization\n\nCode example for shadcn/ui setup:\n```bash\nnpx create-next-app@latest spy-portugues --typescript --tailwind --eslint --app\ncd spy-portugues\nnpx shadcn-ui@latest init\n```\n\nImplement Portuguese localization with next-intl or similar library.",
+        "testStrategy": "1. Verify Next.js application builds successfully\n2. Test responsive design across different device sizes\n3. Validate shadcn/ui components render correctly\n4. Test dark/light mode toggle functionality\n5. Verify Portuguese language support works correctly\n6. Run accessibility audit using Lighthouse or similar tool",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Next.js 14 project with Tailwind CSS",
+            "description": "Create a new Next.js 14 project with TypeScript, Tailwind CSS, ESLint, and App Router configuration.",
+            "dependencies": [],
+            "details": "Use `npx create-next-app@latest spy-portugues --typescript --tailwind --eslint --app` to initialize the project. Verify the installation by running the development server with `npm run dev`. Ensure the App Router is properly configured in the project structure with appropriate folders in the app directory.",
+            "status": "done",
+            "testStrategy": "Verify the development server starts correctly and displays the default Next.js page. Check that Tailwind CSS is working by adding a Tailwind class to an element and confirming the styles are applied."
+          },
+          {
+            "id": 2,
+            "title": "Install and configure shadcn/ui component library",
+            "description": "Set up the shadcn/ui component library with the project's design system and install initial core components.",
+            "dependencies": [
+              1
+            ],
+            "details": "Run `npx shadcn-ui@latest init` and follow the prompts to configure the component library. Choose appropriate styling preferences, component location, and theming options. Install essential components like Button, Card, and Dialog using `npx shadcn-ui@latest add button card dialog`. Create a components.json file for configuration and set up the global CSS file to include shadcn/ui base styles.",
+            "status": "done",
+            "testStrategy": "Create a simple page that uses several shadcn/ui components to verify they render correctly with the chosen theme settings."
+          },
+          {
+            "id": 3,
+            "title": "Implement Portuguese localization support",
+            "description": "Set up internationalization with Portuguese language support using next-intl or a similar library.",
+            "dependencies": [
+              1
+            ],
+            "details": "Install next-intl with `npm install next-intl`. Create a localization directory with JSON files for Portuguese translations. Configure the middleware.ts file to handle locale detection and routing. Set up locale providers in the root layout.tsx file. Create utility functions for translation. Implement language switching functionality if needed.",
+            "status": "done",
+            "testStrategy": "Create test pages with text content that should be localized. Verify that the content appears correctly in Portuguese and that any language switching mechanisms work as expected."
+          },
+          {
+            "id": 4,
+            "title": "Configure dark/light mode theme support",
+            "description": "Implement a theme system with dark and light mode support using next-themes integrated with shadcn/ui.",
+            "dependencies": [
+              2
+            ],
+            "details": "Install next-themes with `npm install next-themes`. Create a ThemeProvider component and wrap the application with it in the root layout. Implement a theme toggle component using shadcn/ui components. Configure CSS variables for both themes in the global CSS file. Ensure proper theme detection based on user preferences. Add persistence for the user's theme choice.",
+            "status": "done",
+            "testStrategy": "Test theme switching functionality in the UI. Verify that the theme persists across page refreshes. Check that the initial theme respects the user's system preferences."
+          },
+          {
+            "id": 5,
+            "title": "Create basic layout components with responsive design",
+            "description": "Develop reusable layout components (Header, Footer, Sidebar) with responsive design and accessibility features.",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Create Header, Footer, and Sidebar components in the components directory. Implement responsive design using Tailwind's breakpoint utilities. Add accessibility attributes (aria-labels, roles, etc.) to all components. Configure responsive navigation for mobile devices. Implement proper keyboard navigation support. Ensure all interactive elements have appropriate focus states. Use the localization system to translate UI elements in these components.",
+            "status": "done",
+            "testStrategy": "Test the layout components at various screen sizes to verify responsive behavior. Use accessibility tools like Lighthouse or axe to check for accessibility compliance. Verify that keyboard navigation works correctly throughout the layout components."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Integrate Clerk Authentication System",
+        "description": "Implement Clerk for user authentication, registration, login, profile management, and role-based access control with GDPR compliance.",
+        "details": "1. Set up Clerk account and configure application\n2. Implement sign-up, sign-in, and password reset flows\n3. Create protected routes using Clerk middleware\n4. Implement role-based access control (admin/user permissions)\n5. Set up user profile management\n6. Ensure GDPR compliance for user data handling\n7. Configure secure session management\n\nCode example:\n```typescript\n// middleware.ts\nimport { authMiddleware } from '@clerk/nextjs';\n\nexport default authMiddleware({\n  publicRoutes: ['/', '/api/public'],\n});\n\nexport const config = {\n  matcher: ['/((?!.*\\\\..*|_next).*)', '/', '/(api|trpc)(.*)'],\n};\n```\n\nImplement role-based access:\n```typescript\n// components/RoleGate.tsx\nimport { useAuth } from '@clerk/nextjs';\n\nexport const RoleGate = ({ children, allowedRole }: { children: React.ReactNode, allowedRole: string }) => {\n  const { isLoaded, userId, sessionId, getToken } = useAuth();\n  // Check user role and render accordingly\n};\n```",
+        "testStrategy": "1. Test user registration flow\n2. Test login and authentication persistence\n3. Verify password reset functionality\n4. Test role-based access control for different user types\n5. Verify secure session handling\n6. Test GDPR compliance features (data export, deletion)\n7. Validate protected routes are properly secured",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Clerk account and configure Next.js application",
+            "description": "Create a Clerk account, set up a new application in the Clerk dashboard, and integrate the Clerk SDK into the Next.js project.",
+            "dependencies": [],
+            "details": "1. Sign up for a Clerk account at clerk.dev\n2. Create a new application in the Clerk dashboard\n3. Configure authentication methods (email/password, social logins)\n4. Install Clerk packages: `npm install @clerk/nextjs`\n5. Add Clerk API keys to .env.local file\n6. Set up ClerkProvider in _app.tsx or layout.tsx\n7. Configure middleware.ts with public and protected routes",
+            "status": "done",
+            "testStrategy": "Verify Clerk initialization by checking console for errors and confirming the Clerk dashboard shows the application is connected."
+          },
+          {
+            "id": 2,
+            "title": "Implement authentication flows (sign-up, sign-in, password reset)",
+            "description": "Create authentication pages and components for user registration, login, and password reset functionality using Clerk components.",
+            "dependencies": [],
+            "details": "1. Create sign-up page using <SignUp /> component\n2. Create sign-in page using <SignIn /> component\n3. Implement password reset flow using <ForgotPassword /> component\n4. Add navigation links between authentication pages\n5. Style components to match application design\n6. Configure redirect URLs after successful authentication\n7. Add error handling for authentication failures",
+            "status": "done",
+            "testStrategy": "Test each authentication flow manually by creating test accounts, signing in, and requesting password resets. Verify redirects work correctly after successful authentication."
+          },
+          {
+            "id": 3,
+            "title": "Create protected routes and implement role-based access control",
+            "description": "Set up route protection using Clerk middleware and implement role-based access control to restrict content based on user roles (admin/user).",
+            "dependencies": [],
+            "details": "1. Extend middleware.ts to protect appropriate routes\n2. Create a RoleGate component as shown in the example\n3. Implement a custom useRole hook to fetch and verify user roles\n4. Store user roles in Clerk user metadata\n5. Create an API endpoint to update user roles (admin only)\n6. Implement UI elements that conditionally render based on user role\n7. Add server-side role verification for sensitive operations",
+            "status": "done",
+            "testStrategy": "Create test users with different roles and verify they can only access appropriate routes and features. Test both client-side and server-side role checks."
+          },
+          {
+            "id": 4,
+            "title": "Implement user profile management",
+            "description": "Create user profile pages that allow users to view and update their profile information, including personal details and preferences.",
+            "dependencies": [],
+            "details": "1. Create a profile page using Clerk's <UserProfile /> component\n2. Implement custom profile fields if needed\n3. Add functionality to update user metadata\n4. Create a profile image upload feature\n5. Implement email verification if required\n6. Add account deletion option with confirmation\n7. Create navigation links to the profile page",
+            "status": "done",
+            "testStrategy": "Test profile updates by changing various fields and verifying the changes persist. Test profile image uploads with different file types and sizes."
+          },
+          {
+            "id": 5,
+            "title": "Ensure GDPR compliance and secure session management",
+            "description": "Implement GDPR-compliant data handling practices and configure secure session management with Clerk.",
+            "dependencies": [],
+            "details": "1. Create privacy policy and terms of service pages\n2. Implement consent checkboxes during registration\n3. Create data export functionality for users\n4. Implement proper data deletion when users delete accounts\n5. Configure session timeouts and security settings in Clerk dashboard\n6. Add session management UI (view active sessions, log out from all devices)\n7. Document all user data handling practices for compliance",
+            "status": "done",
+            "testStrategy": "Verify data export functionality returns all user data. Test account deletion to ensure all user data is properly removed. Review session management by testing session timeouts and multi-device logout."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Set up Supabase Database and Storage",
+        "description": "Configure Supabase for PostgreSQL database and storage services, create database schema, and implement basic data models for the application.",
+        "details": "1. Create Supabase project\n2. Design and implement database schema for core entities:\n   - Users table (linked to Clerk)\n   - Competitors table\n   - Ads table\n   - Content table\n   - Prices table\n   - Notifications table\n3. Set up Supabase Storage buckets for ad creatives and media assets\n4. Configure RLS (Row Level Security) policies\n5. Create database indexes for performance optimization\n6. Set up database migrations\n\nExample schema for Competitors table:\n```sql\nCREATE TABLE competitors (\n  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),\n  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  website TEXT,\n  facebook_url TEXT,\n  instagram_url TEXT,\n  tiktok_url TEXT,\n  regions TEXT[] DEFAULT '{}',\n  property_types TEXT[] DEFAULT '{}',\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n);\n\n-- Create index for faster queries\nCREATE INDEX competitors_user_id_idx ON competitors(user_id);\n```\n\nImplement Supabase client setup:\n```typescript\n// lib/supabase.ts\nimport { createClient } from '@supabase/supabase-js';\n\nconst supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;\nconst supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;\n\nexport const supabase = createClient(supabaseUrl, supabaseAnonKey);\n```",
+        "testStrategy": "1. Verify database connection and schema creation\n2. Test CRUD operations for each table\n3. Validate RLS policies work correctly\n4. Test file uploads to Supabase Storage\n5. Verify database indexes improve query performance\n6. Test data relationships and foreign key constraints\n7. Validate migration scripts",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Supabase Project and Configure Environment",
+            "description": "Set up a new Supabase project, configure environment variables, and implement the Supabase client for the application.",
+            "dependencies": [],
+            "details": "1. Create a new Supabase project through the Supabase dashboard\n2. Note the project URL and anon key\n3. Create .env.local file with NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY\n4. Implement the Supabase client setup in lib/supabase.ts\n5. Create a provider component for Supabase context if needed\n6. Test the connection to ensure the client is properly configured\n<info added on 2025-06-18T18:17:38.748Z>\nSuccessfully completed Supabase environment configuration! Here's what was accomplished:\n\n**Local Supabase Setup:**\n- Resolved Docker container conflicts and vector service issues\n- Disabled analytics temporarily to get Supabase running smoothly\n- Successfully started local Supabase instance with all required services:\n  - API URL: http://127.0.0.1:54321\n  - Database: postgresql://postgres:postgres@127.0.0.1:54322/postgres\n  - Studio URL: http://127.0.0.1:54323\n  - Storage URL: http://127.0.0.1:54321/storage/v1/s3\n\n**Environment Configuration:**\n- Created .env.local file for local development with:\n  - Local Supabase URL and anon key\n  - Service role key for admin operations\n  - S3-compatible storage configuration\n  - Maintained Clerk authentication keys\n  - Included AI API keys for development features\n\n- Created .env.example template file for documentation\n- Updated .gitignore to properly exclude environment files while allowing .env.example\n\n**Supabase Client Integration:**\n- Verified existing supabase.ts client is properly configured to use environment variables\n- Next.js development server is running successfully on port 3000\n- Local Supabase connection is ready for use\n\n**Current Status:**\n- Local development environment fully configured\n- All services running (Next.js + Supabase)\n- Environment variables properly set up for local development\n- Ready to proceed with remaining tasks\n</info added on 2025-06-18T18:17:38.748Z>",
+            "status": "done",
+            "testStrategy": "Verify connection by making a simple query to Supabase and logging the result."
+          },
+          {
+            "id": 2,
+            "title": "Design and Implement Core Database Schema",
+            "description": "Create the database schema for the core entities including Users, Competitors, Ads, Content, Prices, and Notifications tables.",
+            "dependencies": [],
+            "details": "1. Create SQL scripts for each table with appropriate columns and constraints\n2. Implement the Competitors table as per the example schema\n3. Create Users table with a link to Clerk authentication\n4. Design Ads table with fields for tracking competitor advertisements\n5. Implement Content table for storing content analysis\n6. Create Prices table for price tracking\n7. Set up Notifications table for user alerts\n8. Add appropriate foreign key relationships between tables\n9. Create necessary indexes for query optimization",
+            "status": "done",
+            "testStrategy": "Run test queries against each table to verify schema integrity and relationships. Check constraint enforcement with invalid data insertion attempts."
+          },
+          {
+            "id": 3,
+            "title": "Configure Supabase Storage for Media Assets",
+            "description": "Set up Supabase Storage buckets for storing ad creatives, screenshots, and other media assets related to competitor tracking.",
+            "dependencies": [],
+            "details": "1. Create separate storage buckets for different asset types (e.g., 'ad-creatives', 'screenshots', 'logos')\n2. Configure CORS policies for each bucket to allow uploads from the application\n3. Set up appropriate bucket policies for public/private access\n4. Implement helper functions in the codebase for uploading to and retrieving from storage\n5. Create TypeScript interfaces for storage operations\n6. Set up file size limits and allowed file types\n<info added on 2025-06-18T19:30:37.384Z>\n**Storage Implementation Summary:**\n\n1. Created and configured four storage buckets:\n   - `ad-creatives`: Public bucket for competitor ad images/videos (50MB limit)\n   - `screenshots`: Public bucket for website screenshots (10MB limit)\n   - `logos`: Public bucket for competitor logos (5MB limit)\n   - `user-content`: Private bucket for user files (10MB limit)\n\n2. Developed storage.ts utility with:\n   - TypeScript interfaces for type safety\n   - Functions for upload, download, delete, and URL generation\n   - Progress tracking for file uploads\n   - Public/signed URL generation\n   - Bucket file listing capabilities\n   - File deletion with cleanup\n   - Comprehensive error handling\n\n3. Implemented security measures:\n   - Applied Row Level Security (RLS) policies via migration\n   - User-specific access controls for private content\n   - Appropriate read/write permissions for public/private buckets\n\n4. Technical configuration:\n   - Storage API URL: http://127.0.0.1:54321/storage/v1/s3\n   - S3 Access Key: 625729a08b95bf1b7ff351a663f3a23c\n   - Local Supabase instance with S3-compatible storage\n   - All buckets verified operational with successful testing\n</info added on 2025-06-18T19:30:37.384Z>",
+            "status": "done",
+            "testStrategy": "Test uploading and retrieving files of various types and sizes. Verify access controls by attempting to access files with and without authentication."
+          },
+          {
+            "id": 4,
+            "title": "Implement Row Level Security Policies",
+            "description": "Configure Row Level Security (RLS) policies to ensure data privacy and proper access control for all database tables.",
+            "dependencies": [],
+            "details": "1. Enable RLS on all tables\n2. Create policies for SELECT operations that restrict users to viewing only their own data\n3. Implement INSERT policies to validate new data and assign ownership\n4. Set up UPDATE and DELETE policies that verify user ownership\n5. Create admin-specific policies for administrative functions\n6. Test policies with different user contexts\n7. Document all security policies for future reference",
+            "status": "done",
+            "testStrategy": "Create test users with different permissions and verify they can only access their own data. Attempt unauthorized operations to confirm they are properly blocked."
+          },
+          {
+            "id": 5,
+            "title": "Set Up Database Migrations and Seed Data",
+            "description": "Implement a database migration system and create seed data for development and testing environments.",
+            "dependencies": [],
+            "details": "1. Choose and set up a migration tool compatible with Supabase (e.g., supabase-js migrations or a custom solution)\n2. Create initial migration scripts based on the implemented schema\n3. Develop seed data scripts for populating test data\n4. Implement a versioning system for tracking schema changes\n5. Create documentation for running migrations\n6. Set up CI/CD integration for automated migrations\n7. Implement rollback capabilities for failed migrations\n<info added on 2025-06-18T18:05:21.873Z>\n## Migration and Seed Data Implementation Summary\n\n### Database Reset Issue Resolution\n- Identified schema mismatch between seed.sql and actual database schema\n- Resolved column name discrepancies in ads table:\n  - `title` → `headline`\n  - `description` → `ad_copy` \n  - `image_url` → `creative_url`\n  - `status` → `is_active` (boolean)\n\n### Seed Data Fixes\n- Updated column names in seed.sql to match actual database schema\n- Converted 'active' string values to boolean `true` for is_active column\n- Preserved all test data structure and relationships\n\n### Successful Implementation\n- Completed `supabase db reset` successfully\n- Applied all migrations correctly\n- Inserted seed data without errors\n- Database is now operational and ready for development\n\n### Current Database Status\n- Local Supabase instance running on postgresql://postgres:postgres@127.0.0.1:54322/postgres\n- All tables created with proper RLS policies\n- Test data available:\n  - 3 test profiles (2 users, 1 admin)\n  - 3 competitors with different regions/property types\n  - 2 test ads with proper schema alignment\n</info added on 2025-06-18T18:05:21.873Z>",
+            "status": "done",
+            "testStrategy": "Test the migration process in a development environment. Verify that migrations can be applied and rolled back correctly. Confirm seed data is properly inserted and relationships are maintained."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Implement CI/CD Pipeline with GitHub Actions",
+        "description": "Set up continuous integration and deployment pipeline using GitHub Actions for automated testing and deployment to Vercel (frontend) and Railway (backend).",
+        "details": "1. Create GitHub repository for the project\n2. Configure GitHub Actions workflow for CI/CD\n3. Set up testing environment\n4. Configure Vercel deployment for frontend\n5. Configure Railway deployment for backend services\n6. Implement environment variable management\n7. Set up branch protection rules\n\nExample GitHub Actions workflow:\n```yaml\n# .github/workflows/ci-cd.yml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [main, development]\n  pull_request:\n    branches: [main, development]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - name: Setup Node.js\n        uses: actions/setup-node@v3\n        with:\n          node-version: '18'\n      - name: Install dependencies\n        run: npm ci\n      - name: Run tests\n        run: npm test\n\n  deploy-frontend:\n    needs: test\n    if: github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - name: Deploy to Vercel\n        uses: amondnet/vercel-action@v20\n        with:\n          vercel-token: ${{ secrets.VERCEL_TOKEN }}\n          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}\n          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}\n          vercel-args: '--prod'\n```",
+        "testStrategy": "1. Verify GitHub Actions workflow runs successfully\n2. Test automatic deployment to Vercel on main branch push\n3. Verify Railway deployment for backend services\n4. Test environment variable handling\n5. Validate branch protection rules\n6. Test rollback procedures\n7. Verify build and test steps complete successfully",
+        "priority": "medium",
+        "dependencies": [
+          1,
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up GitHub repository with initial workflow configuration",
+            "description": "Create the GitHub repository for the project and set up the basic structure for GitHub Actions workflows.",
+            "dependencies": [],
+            "details": "1. Create a new GitHub repository or use existing one\n2. Create `.github/workflows` directory in the repository\n3. Create a basic `ci-cd.yml` workflow file with the initial structure\n4. Configure the workflow to trigger on push and pull requests to main and development branches\n5. Set up the basic job structure for testing",
+            "status": "pending",
+            "testStrategy": "Manually verify the workflow file syntax using GitHub Actions validator"
+          },
+          {
+            "id": 2,
+            "title": "Implement automated testing workflow",
+            "description": "Configure the CI pipeline to automatically run tests for both frontend and backend components when code is pushed or pull requests are created.",
+            "dependencies": [],
+            "details": "1. Configure Node.js setup in the workflow\n2. Set up caching for npm dependencies to speed up builds\n3. Configure separate test jobs for frontend and backend\n4. Implement test commands that run unit and integration tests\n5. Configure test reporting to display results in GitHub",
+            "status": "pending",
+            "testStrategy": "Push a commit with failing tests to verify the workflow correctly identifies and reports test failures"
+          },
+          {
+            "id": 3,
+            "title": "Configure Vercel deployment for frontend",
+            "description": "Set up automated deployment of the frontend application to Vercel when tests pass on the main branch.",
+            "dependencies": [],
+            "details": "1. Create a Vercel project and connect it to the GitHub repository\n2. Generate Vercel deployment tokens and add them as GitHub secrets (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID)\n3. Configure the deployment job in the workflow file to deploy to Vercel after successful tests\n4. Set up preview deployments for pull requests\n5. Configure production deployment for the main branch",
+            "status": "pending",
+            "testStrategy": "Create a test PR to verify preview deployment, then merge to main to verify production deployment"
+          },
+          {
+            "id": 4,
+            "title": "Configure Railway deployment for backend",
+            "description": "Set up automated deployment of the backend services to Railway when tests pass on the main branch.",
+            "dependencies": [],
+            "details": "1. Create a Railway project and connect it to the GitHub repository\n2. Generate Railway deployment tokens and add them as GitHub secrets (RAILWAY_TOKEN)\n3. Configure the deployment job in the workflow file to deploy to Railway after successful tests\n4. Set up environment-specific deployments (staging/production)\n5. Configure database migrations to run as part of the deployment process",
+            "status": "pending",
+            "testStrategy": "Push a minor backend change to verify the deployment process works correctly"
+          },
+          {
+            "id": 5,
+            "title": "Implement security and environment management",
+            "description": "Set up branch protection rules, environment variable management, and security scanning in the CI/CD pipeline.",
+            "dependencies": [],
+            "details": "1. Configure branch protection rules for main and development branches\n2. Set up environment variable management for different environments (dev/staging/prod)\n3. Implement secrets scanning to prevent accidental commit of sensitive information\n4. Add dependency vulnerability scanning using GitHub's Dependabot\n5. Create documentation for the CI/CD pipeline in the repository README",
+            "status": "pending",
+            "testStrategy": "Attempt to push directly to protected branches to verify protection rules, and create a PR with a simulated security vulnerability to verify scanning"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Create Express.js Backend API Service",
+        "description": "Develop a Node.js backend with Express.js to provide RESTful APIs for the application, including middleware setup, route handlers, and error management.",
+        "details": "1. Set up Node.js project with Express.js\n2. Configure middleware (CORS, body-parser, etc.)\n3. Implement API route structure\n4. Create controller logic for core entities\n5. Set up error handling middleware\n6. Implement request validation\n7. Configure logging\n8. Set up Supabase client integration\n\nExample Express.js setup:\n```javascript\n// app.js\nconst express = require('express');\nconst cors = require('cors');\nconst helmet = require('helmet');\nconst morgan = require('morgan');\n\nconst app = express();\n\n// Middleware\napp.use(cors());\napp.use(helmet());\napp.use(express.json());\napp.use(morgan('dev'));\n\n// Routes\napp.use('/api/competitors', require('./routes/competitors'));\napp.use('/api/ads', require('./routes/ads'));\napp.use('/api/content', require('./routes/content'));\napp.use('/api/prices', require('./routes/prices'));\n\n// Error handling middleware\napp.use((err, req, res, next) => {\n  console.error(err.stack);\n  res.status(500).json({ error: 'Something went wrong!' });\n});\n\nconst PORT = process.env.PORT || 3001;\napp.listen(PORT, () => console.log(`Server running on port ${PORT}`));\n```\n\nExample route implementation:\n```javascript\n// routes/competitors.js\nconst express = require('express');\nconst router = express.Router();\nconst { supabase } = require('../lib/supabase');\n\n// Get all competitors for a user\nrouter.get('/', async (req, res) => {\n  const { user_id } = req.query;\n  const { data, error } = await supabase\n    .from('competitors')\n    .select('*')\n    .eq('user_id', user_id);\n  \n  if (error) return res.status(400).json({ error });\n  return res.json(data);\n});\n\nmodule.exports = router;\n```",
+        "testStrategy": "1. Test API endpoints using Postman or similar tool\n2. Write unit tests for controller logic\n3. Test error handling for various scenarios\n4. Validate request validation works correctly\n5. Test middleware functionality\n6. Verify logging captures appropriate information\n7. Test integration with Supabase\n8. Perform load testing to ensure performance",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Node.js project with Express.js and configure middleware",
+            "description": "Initialize a new Node.js project, install Express.js and necessary middleware packages, and configure the basic application setup.",
+            "dependencies": [],
+            "details": "1. Create a new directory for the project\n2. Initialize with `npm init -y`\n3. Install required packages: express, cors, helmet, morgan, body-parser\n4. Create app.js file with basic Express configuration\n5. Set up middleware: CORS, Helmet for security, body-parser for JSON handling, Morgan for logging\n6. Configure environment variables with dotenv\n7. Create a basic server startup script",
+            "status": "in-progress",
+            "testStrategy": "Test server initialization and middleware configuration using supertest to ensure the server starts correctly and middleware is properly applied."
+          },
+          {
+            "id": 2,
+            "title": "Implement API route structure and Supabase integration",
+            "description": "Set up the folder structure for routes and integrate Supabase client for database operations.",
+            "dependencies": [
+              1
+            ],
+            "details": "1. Create a routes directory with separate files for each entity (competitors.js, ads.js, content.js, prices.js)\n2. Set up basic router structure in each file\n3. Install and configure Supabase client in a separate lib/supabase.js file\n4. Create environment variables for Supabase URL and API key\n5. Export the Supabase client for use in routes\n6. Register all route files in the main app.js",
+            "status": "pending",
+            "testStrategy": "Test Supabase connection by creating a simple health check endpoint that verifies database connectivity."
+          },
+          {
+            "id": 3,
+            "title": "Implement controller logic for core entities",
+            "description": "Create controller functions for handling CRUD operations for all core entities (competitors, ads, content, prices).",
+            "dependencies": [
+              2
+            ],
+            "details": "1. Create a controllers directory with separate files for each entity\n2. Implement standard CRUD functions (getAll, getById, create, update, delete) for each entity\n3. Use Supabase client for database operations\n4. Handle query parameters for filtering and pagination\n5. Structure response data consistently across all controllers\n6. Connect controllers to corresponding routes",
+            "status": "pending",
+            "testStrategy": "Create unit tests for each controller function using Jest, mocking the Supabase client responses to test success and error scenarios."
+          },
+          {
+            "id": 4,
+            "title": "Implement request validation and error handling middleware",
+            "description": "Add validation for incoming requests and create comprehensive error handling middleware.",
+            "dependencies": [
+              3
+            ],
+            "details": "1. Install and configure a validation library (e.g., express-validator or joi)\n2. Create validation schemas for each entity\n3. Implement validation middleware for routes\n4. Create a centralized error handling middleware\n5. Define custom error classes for different types of errors (ValidationError, NotFoundError, etc.)\n6. Implement consistent error response format\n7. Add try/catch blocks in controllers and routes to properly catch and forward errors\n<info added on 2025-06-19T14:21:33.010Z>\n✅ **IMPLEMENTATION COMPLETE** - All validation and error handling middleware requirements fulfilled:\n\n**Implemented Components:**\n1. **Express-validator library** properly configured and integrated\n2. **Comprehensive validation schemas** for all entities (competitors, ads, content, prices, notifications)\n3. **Validation middleware** applied to all API routes with proper error handling\n4. **Centralized error handling middleware** (`globalErrorHandler`) with development/production modes\n5. **Complete set of custom error classes** in `utils/errors.js`:\n   - AppError (base class)\n   - ValidationError, NotFoundError, ConflictError\n   - UnauthorizedError, ForbiddenError, DatabaseError\n   - ExternalServiceError, RateLimitError\n6. **Consistent error response format** with proper HTTP status codes, error codes, and timestamps\n7. **Global integration** in app.js with proper middleware order\n\n**Key Features:**\n- Async error handling wrapper for controllers\n- Supabase-specific error handling (UUID validation, constraint violations)\n- JWT error handling for authentication\n- Development vs production error responses\n- Detailed validation error messages with field-level information\n- Proper 404 handling for unknown routes\n\n**Files Implemented:**\n- `middleware/validation.js` (526 lines) - Complete validation schemas\n- `middleware/errorHandler.js` (168 lines) - Global error handling\n- `utils/errors.js` (110 lines) - Custom error classes\n- Integration in `app.js` and all route files\n\nThe validation and error handling system is production-ready and comprehensive.\n</info added on 2025-06-19T14:21:33.010Z>",
+            "status": "done",
+            "testStrategy": "Test validation by sending invalid requests and verifying appropriate error responses. Test error handling by triggering various error conditions and checking response format."
+          },
+          {
+            "id": 5,
+            "title": "Set up logging and finalize API documentation",
+            "description": "Implement comprehensive logging throughout the application and document all API endpoints.",
+            "dependencies": [
+              4
+            ],
+            "details": "1. Configure Morgan for HTTP request logging\n2. Implement a custom logging utility for application events\n3. Add logging for errors, database operations, and important application events\n4. Install and configure Swagger or similar tool for API documentation\n5. Document all endpoints with request/response examples\n6. Create a README.md with setup instructions and API overview\n7. Add environment configuration documentation\n8. Implement a simple health check endpoint",
+            "status": "in-progress",
+            "testStrategy": "Verify logging by checking log output during automated tests. Test API documentation by ensuring all endpoints are properly documented and accessible through the documentation interface."
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Implement BullMQ with Redis for Background Jobs",
+        "description": "Set up BullMQ with Redis for background job processing and task scheduling, particularly for ad scraping and data collection tasks.",
+        "details": "1. Set up Redis instance (using Railway or similar service)\n2. Install and configure BullMQ\n3. Create job queue definitions for different tasks:\n   - Ad scraping queue\n   - Content collection queue\n   - Notification processing queue\n4. Implement job processors\n5. Set up recurring job schedules\n6. Implement error handling and retry logic\n7. Create monitoring dashboard\n\nExample BullMQ setup:\n```javascript\n// queues/adScraper.js\nconst { Queue, Worker } = require('bullmq');\n\nconst adScraperQueue = new Queue('adScraper', {\n  connection: {\n    host: process.env.REDIS_HOST,\n    port: process.env.REDIS_PORT,\n    password: process.env.REDIS_PASSWORD\n  }\n});\n\n// Create a worker to process jobs\nconst adScraperWorker = new Worker('adScraper', async (job) => {\n  const { competitorId } = job.data;\n  // Implement ad scraping logic here\n  console.log(`Scraping ads for competitor ${competitorId}`);\n  // Return job result\n  return { success: true, adsScraped: 10 };\n}, {\n  connection: {\n    host: process.env.REDIS_HOST,\n    port: process.env.REDIS_PORT,\n    password: process.env.REDIS_PASSWORD\n  },\n  concurrency: 5,\n});\n\n// Handle worker events\nadScraperWorker.on('completed', (job) => {\n  console.log(`Job ${job.id} completed successfully`);\n});\n\nadScraperWorker.on('failed', (job, err) => {\n  console.error(`Job ${job.id} failed with error: ${err.message}`);\n});\n\n// Schedule recurring jobs\nasync function scheduleAdScraping() {\n  // Get all competitors from database\n  const competitors = await getCompetitorsFromDB();\n  \n  // Schedule jobs for each competitor\n  for (const competitor of competitors) {\n    await adScraperQueue.add('scrape', { competitorId: competitor.id }, {\n      repeat: {\n        pattern: '0 */6 * * *' // Every 6 hours\n      }\n    });\n  }\n}\n\nmodule.exports = { adScraperQueue, scheduleAdScraping };\n```",
+        "testStrategy": "1. Test job creation and processing\n2. Verify recurring job scheduling works correctly\n3. Test error handling and retry logic\n4. Validate concurrency settings\n5. Test job prioritization\n6. Verify Redis connection and persistence\n7. Test monitoring dashboard functionality\n8. Validate job completion events are properly handled",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Redis instance and configure BullMQ connection",
+            "description": "Provision a Redis instance using Railway or similar service and configure the application to connect to it for BullMQ job processing.",
+            "dependencies": [],
+            "details": "1. Create a Redis instance on Railway or similar cloud service\n2. Obtain connection credentials (host, port, password)\n3. Add Redis credentials to environment variables\n4. Create a shared connection configuration module that can be imported by all queue modules\n5. Implement connection error handling and reconnection logic\n6. Create a health check endpoint to verify Redis connectivity",
+            "status": "pending",
+            "testStrategy": "Write tests to verify Redis connection can be established and maintained. Mock Redis for unit tests and use a real Redis instance for integration tests."
+          },
+          {
+            "id": 2,
+            "title": "Implement core queue definitions and base worker structure",
+            "description": "Create the foundational queue definitions for ad scraping, content collection, and notification processing, along with their basic worker structures.",
+            "dependencies": [
+              1
+            ],
+            "details": "1. Create a 'queues' directory with separate files for each queue type\n2. Implement the adScraperQueue, contentCollectionQueue, and notificationQueue classes\n3. Define the basic worker structure for each queue with proper connection settings\n4. Implement standard event handlers (completed, failed, stalled) for all workers\n5. Create a queue registry module that exports all queues for easy access\n6. Set up proper graceful shutdown handling for workers",
+            "status": "pending",
+            "testStrategy": "Test queue creation and basic job addition. Verify that workers can process simple jobs and that events are properly triggered."
+          },
+          {
+            "id": 3,
+            "title": "Develop job processors for each queue type",
+            "description": "Implement the actual job processing logic for ad scraping, content collection, and notification processing queues.",
+            "dependencies": [
+              2
+            ],
+            "details": "1. Create a 'processors' directory with implementation files for each job type\n2. Implement the ad scraping processor with logic to fetch ads from various sources\n3. Develop the content collection processor to gather and store content data\n4. Create the notification processor to handle sending various types of notifications\n5. Implement proper error handling within each processor\n6. Add logging throughout the processing steps for debugging and monitoring\n7. Ensure processors return standardized result objects",
+            "status": "pending",
+            "testStrategy": "Create unit tests for each processor function. Use mocks for external services and databases. Test various scenarios including success paths and error conditions."
+          },
+          {
+            "id": 4,
+            "title": "Implement job scheduling and retry mechanisms",
+            "description": "Set up recurring job schedules for regular tasks and implement robust retry logic for handling transient failures.",
+            "dependencies": [
+              3
+            ],
+            "details": "1. Create a scheduler module to manage recurring jobs\n2. Implement functions to schedule jobs based on cron patterns\n3. Set up appropriate retry configurations for different job types (with backoff strategies)\n4. Create a mechanism to pause/resume job processing based on system load\n5. Implement job priority handling for critical vs. non-critical tasks\n6. Add functionality to manually trigger jobs outside of the regular schedule\n7. Ensure scheduled jobs don't duplicate if already in queue",
+            "status": "pending",
+            "testStrategy": "Test scheduling functionality by mocking time and verifying jobs are added at expected intervals. Test retry logic by forcing failures and verifying retry attempts occur with correct backoff."
+          },
+          {
+            "id": 5,
+            "title": "Create monitoring dashboard and administrative controls",
+            "description": "Develop a monitoring interface to track job status, queue health, and provide administrative controls for managing jobs.",
+            "dependencies": [
+              4
+            ],
+            "details": "1. Implement a dashboard UI using a library like Bull Board or create a custom interface\n2. Add endpoints to fetch queue statistics (job counts, success/failure rates, processing times)\n3. Create controls to pause/resume queues and workers\n4. Implement functionality to view job details, logs, and results\n5. Add ability to manually retry or remove failed jobs\n6. Create alerts for queue backlogs or persistent failures\n7. Implement authentication for dashboard access\n8. Add performance metrics collection for monitoring system health",
+            "status": "pending",
+            "testStrategy": "Test dashboard endpoints for correct data retrieval and action execution. Verify authentication works properly. Test that administrative actions (pause, resume, retry) function as expected."
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Develop Competitor Management System",
+        "description": "Create a system for users to add, edit, and manage competitors they want to track, including social media accounts and regional preferences.",
+        "details": "1. Create database models for competitors\n2. Implement API endpoints for CRUD operations\n3. Develop UI components for competitor management\n4. Create forms for adding/editing competitors\n5. Implement validation for social media URLs\n6. Create regional preference selection interface\n7. Implement property type selection\n\nExample competitor form component:\n```tsx\n// components/CompetitorForm.tsx\nimport { useState } from 'react';\nimport { Button, Input, Select } from '@/components/ui';\n\nconst regions = ['Lisbon', 'Porto', 'Algarve', 'Central Portugal', 'Northern Portugal'];\nconst propertyTypes = ['Apartamento', 'Moradia', 'Terreno', 'Escritório', 'Loja'];\n\nexport function CompetitorForm({ onSubmit, initialData = {} }) {\n  const [formData, setFormData] = useState({\n    name: initialData.name || '',\n    website: initialData.website || '',\n    facebook_url: initialData.facebook_url || '',\n    instagram_url: initialData.instagram_url || '',\n    tiktok_url: initialData.tiktok_url || '',\n    regions: initialData.regions || [],\n    property_types: initialData.property_types || []\n  });\n\n  const handleChange = (e) => {\n    const { name, value } = e.target;\n    setFormData(prev => ({ ...prev, [name]: value }));\n  };\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    onSubmit(formData);\n  };\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <div className=\"space-y-4\">\n        <Input\n          label=\"Competitor Name\"\n          name=\"name\"\n          value={formData.name}\n          onChange={handleChange}\n          required\n        />\n        <Input\n          label=\"Website\"\n          name=\"website\"\n          value={formData.website}\n          onChange={handleChange}\n          type=\"url\"\n        />\n        <Input\n          label=\"Facebook URL\"\n          name=\"facebook_url\"\n          value={formData.facebook_url}\n          onChange={handleChange}\n          type=\"url\"\n        />\n        {/* Add other fields */}\n        \n        <Select\n          label=\"Regions\"\n          name=\"regions\"\n          value={formData.regions}\n          onChange={handleMultiSelect}\n          options={regions.map(r => ({ label: r, value: r }))}\n          multiple\n        />\n        \n        <Button type=\"submit\">Save Competitor</Button>\n      </div>\n    </form>\n  );\n}\n```\n\nAPI endpoint implementation:\n```typescript\n// pages/api/competitors.ts\nimport { NextApiRequest, NextApiResponse } from 'next';\nimport { supabase } from '@/lib/supabase';\n\nexport default async function handler(req: NextApiRequest, res: NextApiResponse) {\n  const { method } = req;\n  const { user_id } = req.query; // From authenticated user\n\n  switch (method) {\n    case 'GET':\n      const { data, error } = await supabase\n        .from('competitors')\n        .select('*')\n        .eq('user_id', user_id);\n      \n      if (error) return res.status(400).json({ error });\n      return res.status(200).json(data);\n      \n    case 'POST':\n      const newCompetitor = { ...req.body, user_id };\n      const { data: created, error: createError } = await supabase\n        .from('competitors')\n        .insert(newCompetitor)\n        .select();\n      \n      if (createError) return res.status(400).json({ error: createError });\n      return res.status(201).json(created[0]);\n      \n    // Add PUT and DELETE methods\n      \n    default:\n      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);\n      return res.status(405).end(`Method ${method} Not Allowed`);\n  }\n}\n```",
+        "testStrategy": "1. Test CRUD operations for competitors\n2. Validate form submission and error handling\n3. Test URL validation for social media accounts\n4. Verify regional and property type selection works correctly\n5. Test UI components render correctly\n6. Verify data is correctly saved to the database\n7. Test user permissions (users can only see their own competitors)",
+        "priority": "high",
+        "dependencies": [
+          2,
+          3,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Database Models for Competitors",
+            "description": "Design and implement the database schema for storing competitor information including basic details, social media accounts, and preferences.",
+            "dependencies": [],
+            "details": "Create a Supabase table named 'competitors' with the following fields: id (UUID), user_id (foreign key), name (text), website (text), facebook_url (text), instagram_url (text), tiktok_url (text), regions (array), property_types (array), created_at (timestamp), updated_at (timestamp). Set up appropriate indexes and constraints, ensuring the user_id has a foreign key relationship to the users table.",
+            "status": "pending",
+            "testStrategy": "Verify table creation in Supabase dashboard. Test data insertion with sample competitor records to ensure all fields store correctly, especially array types for regions and property_types."
+          },
+          {
+            "id": 2,
+            "title": "Implement Complete API Endpoints for Competitor CRUD",
+            "description": "Develop all necessary API endpoints to handle creating, reading, updating, and deleting competitor records.",
+            "dependencies": [],
+            "details": "Extend the existing API endpoint implementation to include all CRUD operations: GET for listing and retrieving individual competitors, POST for creating new competitors, PUT for updating existing competitors, and DELETE for removing competitors. Implement proper error handling, validation, and authentication checks to ensure users can only access their own competitor data. Include pagination for the GET endpoint that lists competitors.",
+            "status": "pending",
+            "testStrategy": "Test each endpoint with Postman or similar tool. Verify authentication works correctly. Test edge cases like invalid inputs, unauthorized access attempts, and pagination limits."
+          },
+          {
+            "id": 3,
+            "title": "Develop UI Components for Competitor Management",
+            "description": "Create reusable UI components for displaying, listing, and managing competitor information.",
+            "dependencies": [],
+            "details": "Develop the following components: CompetitorList for displaying all competitors in a table/grid format with sorting and filtering capabilities, CompetitorCard for showing individual competitor details in a compact format, and CompetitorDetail for a comprehensive view of a single competitor. Implement proper loading states, error handling, and empty states. Use the design system components (Button, Input, Select) for consistency.",
+            "status": "pending",
+            "testStrategy": "Create component tests using React Testing Library to verify rendering and interaction behavior. Test responsive design across different screen sizes."
+          },
+          {
+            "id": 4,
+            "title": "Implement Competitor Form with Validation",
+            "description": "Create a comprehensive form component for adding and editing competitors with proper validation for all fields.",
+            "dependencies": [],
+            "details": "Enhance the CompetitorForm component to include all required fields from the database model. Implement client-side validation for all inputs, especially URL validation for website and social media fields. Add proper error messages and visual feedback. Complete the handleMultiSelect function for regions and property types selection. Implement form submission with loading states and success/error feedback.",
+            "status": "pending",
+            "testStrategy": "Test form validation with various input combinations. Verify that the form correctly handles initial data for editing mode. Test submission behavior including error handling."
+          },
+          {
+            "id": 5,
+            "title": "Create Competitor Management Page with Integration",
+            "description": "Develop the main competitor management page that integrates all components and connects to the API.",
+            "dependencies": [],
+            "details": "Create a page at /competitors that serves as the main interface for managing competitors. Implement the page layout with sections for listing competitors and adding/editing them. Connect all UI components to the API endpoints, implementing proper data fetching, caching, and state management. Add features like search, filtering by region or property type, and sorting. Implement optimistic UI updates for better user experience during CRUD operations.",
+            "status": "pending",
+            "testStrategy": "Perform end-to-end testing of the complete competitor management flow. Test the integration between components and API. Verify that all user interactions (add, edit, delete, filter, search) work correctly."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Implement Meta Ad Tracking System",
+        "description": "Develop a system to track and monitor competitors' Facebook and Instagram advertisements using Meta Marketing API and web scraping techniques.",
+        "details": "1. Set up Meta Marketing API integration\n2. Configure Puppeteer/Playwright for web scraping\n3. Implement ad data collection logic\n4. Create storage system for ad creatives\n5. Develop ad metadata extraction\n6. Implement ad duration tracking (first seen/last seen)\n7. Create background jobs for scheduled ad collection\n\nExample Meta API integration:\n```typescript\n// lib/metaApi.js\nconst axios = require('axios');\n\nconst META_API_VERSION = 'v18.0';\nconst META_API_BASE_URL = `https://graph.facebook.com/${META_API_VERSION}`;\n\nclass MetaApiClient {\n  constructor(accessToken) {\n    this.accessToken = accessToken;\n  }\n\n  async getAds(adAccountId) {\n    try {\n      const response = await axios.get(`${META_API_BASE_URL}/${adAccountId}/ads`, {\n        params: {\n          fields: 'id,name,status,created_time,updated_time,creative',\n          access_token: this.accessToken\n        }\n      });\n      return response.data;\n    } catch (error) {\n      console.error('Error fetching ads:', error.response?.data || error.message);\n      throw error;\n    }\n  }\n\n  async getAdCreative(creativeId) {\n    try {\n      const response = await axios.get(`${META_API_BASE_URL}/${creativeId}`, {\n        params: {\n          fields: 'id,name,body,image_url,video_id,thumbnail_url,link_url',\n          access_token: this.accessToken\n        }\n      });\n      return response.data;\n    } catch (error) {\n      console.error('Error fetching ad creative:', error.response?.data || error.message);\n      throw error;\n    }\n  }\n}\n\nmodule.exports = MetaApiClient;\n```\n\nExample Puppeteer scraping:\n```javascript\n// scrapers/facebookScraper.js\nconst puppeteer = require('puppeteer');\nconst { supabase } = require('../lib/supabase');\n\nasync function scrapeFacebookAds(competitorUrl) {\n  const browser = await puppeteer.launch({\n    headless: true,\n    args: ['--no-sandbox', '--disable-setuid-sandbox']\n  });\n  \n  try {\n    const page = await browser.newPage();\n    await page.goto(`${competitorUrl}/ads_library`, { waitUntil: 'networkidle2' });\n    \n    // Wait for ads to load\n    await page.waitForSelector('.ad_library_card');\n    \n    // Extract ad data\n    const ads = await page.evaluate(() => {\n      const adCards = document.querySelectorAll('.ad_library_card');\n      return Array.from(adCards).map(card => {\n        // Extract relevant data from the card\n        const adId = card.getAttribute('data-ad-id');\n        const adText = card.querySelector('.ad_text')?.textContent;\n        const imageUrl = card.querySelector('img')?.src;\n        // Extract more data as needed\n        \n        return { adId, adText, imageUrl };\n      });\n    });\n    \n    // Save ads to database\n    for (const ad of ads) {\n      // Download and store image\n      if (ad.imageUrl) {\n        const imageResponse = await fetch(ad.imageUrl);\n        const imageBuffer = await imageResponse.arrayBuffer();\n        \n        // Upload to Supabase Storage\n        const { data, error } = await supabase.storage\n          .from('ad-creatives')\n          .upload(`${ad.adId}.jpg`, imageBuffer, {\n            contentType: 'image/jpeg'\n          });\n          \n        if (!error) {\n          ad.storedImagePath = data.path;\n        }\n      }\n      \n      // Save ad to database\n      await supabase.from('ads').upsert({\n        ad_id: ad.adId,\n        ad_text: ad.adText,\n        image_url: ad.storedImagePath,\n        first_seen: new Date(),\n        last_seen: new Date()\n      });\n    }\n    \n    return ads;\n  } finally {\n    await browser.close();\n  }\n}\n\nmodule.exports = { scrapeFacebookAds };\n```",
+        "testStrategy": "1. Test Meta Marketing API integration\n2. Verify web scraping functionality works with different competitor pages\n3. Test ad data extraction accuracy\n4. Validate image and video storage in Supabase\n5. Test scheduled job execution\n6. Verify first seen/last seen tracking\n7. Test rate limiting and error handling\n8. Validate proxy rotation if implemented",
+        "priority": "high",
+        "dependencies": [
+          3,
+          5,
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Meta Marketing API Integration",
+            "description": "Implement a robust client for the Meta Marketing API that handles authentication, rate limiting, and provides methods for fetching ad data from competitors' pages.",
+            "dependencies": [],
+            "details": "Extend the existing MetaApiClient class to include error handling, retry logic, and rate limiting. Implement additional methods for fetching ad insights, targeting information, and ad library data. Create a configuration system for storing API credentials securely using environment variables. Add pagination support to handle large datasets when fetching ads.",
+            "status": "pending",
+            "testStrategy": "Create unit tests with mocked API responses. Test error handling with simulated API failures. Implement integration tests with a sandbox Meta API account."
+          },
+          {
+            "id": 2,
+            "title": "Implement Web Scraping Infrastructure",
+            "description": "Set up a reliable web scraping system using Puppeteer/Playwright to extract ad data from Facebook and Instagram that isn't available through the API.",
+            "dependencies": [],
+            "details": "Build on the example facebookScraper.js to create a robust scraping infrastructure. Implement proxy rotation to avoid IP blocks. Add browser fingerprinting evasion techniques. Create separate scrapers for Facebook and Instagram ads. Implement scrolling logic to load more ads dynamically. Add error recovery mechanisms for failed scraping attempts. Include logging for debugging purposes.",
+            "status": "pending",
+            "testStrategy": "Create tests with mock HTML responses. Test the scraper against known ad layouts. Implement monitoring to detect when page structure changes break the scraper."
+          },
+          {
+            "id": 3,
+            "title": "Develop Ad Data Storage System",
+            "description": "Create a database schema and storage system for saving ad creatives (images, videos) and metadata with proper indexing and deduplication.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Design and implement database tables for storing ad metadata, creative assets, and tracking information. Set up Supabase storage buckets for ad creatives with appropriate access controls. Implement deduplication logic to avoid storing identical ads multiple times. Create database indexes for efficient querying. Implement versioning to track changes in ads over time. Add compression for stored assets to reduce storage costs.",
+            "status": "pending",
+            "testStrategy": "Test database schema with sample data. Verify storage and retrieval of different creative types. Test deduplication logic with identical and slightly modified ads."
+          },
+          {
+            "id": 4,
+            "title": "Implement Ad Metadata Extraction and Analysis",
+            "description": "Create a system to extract and analyze metadata from ads, including text analysis, image recognition, and ad targeting information.",
+            "dependencies": [
+              3
+            ],
+            "details": "Implement text extraction from ad creatives. Add image analysis to detect objects, text, and themes in ad images. Extract targeting information from API data when available. Implement ad categorization based on content and targeting. Create a system to detect changes in ad messaging over time. Add sentiment analysis for ad copy. Implement competitor grouping to organize ads by advertiser.",
+            "status": "pending",
+            "testStrategy": "Test text extraction with various ad formats. Validate image analysis with a diverse set of ad creatives. Test categorization accuracy against manually labeled ads."
+          },
+          {
+            "id": 5,
+            "title": "Create Scheduled Collection and Monitoring System",
+            "description": "Implement a background job system that regularly collects ad data, tracks ad duration (first seen/last seen), and monitors for new competitor ads.",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Set up a job scheduler using a tool like node-cron or Bull queue. Implement jobs for regular API polling and web scraping at configurable intervals. Create logic to update first_seen and last_seen timestamps for ads. Implement notification system for new competitor ads or significant changes. Add monitoring for job failures and automatic retries. Create a dashboard to visualize collection statistics and job status. Implement competitor watchlist management.",
+            "status": "pending",
+            "testStrategy": "Test scheduling with accelerated time. Verify correct timestamp updates for first_seen/last_seen. Test recovery from failed jobs. Validate notification system with simulated new ads."
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Build Ad Creative Gallery Interface",
+        "description": "Create a visual gallery interface for browsing, filtering, and searching competitor advertisements and creative assets.",
+        "details": "1. Design gallery UI components\n2. Implement filtering by competitor name, property type, and region\n3. Create keyword search functionality for ad copy\n4. Build image/video preview components\n5. Implement pagination for large collections\n6. Create detailed view modal for ads\n7. Add sorting options (date, engagement, etc.)\n\nExample gallery component:\n```tsx\n// components/AdGallery.tsx\nimport { useState, useEffect } from 'react';\nimport { Input, Select, Button } from '@/components/ui';\nimport { AdCard } from '@/components/AdCard';\nimport { AdDetailModal } from '@/components/AdDetailModal';\n\nexport function AdGallery() {\n  const [ads, setAds] = useState([]);\n  const [filteredAds, setFilteredAds] = useState([]);\n  const [filters, setFilters] = useState({\n    competitor: '',\n    propertyType: '',\n    region: '',\n    keyword: ''\n  });\n  const [selectedAd, setSelectedAd] = useState(null);\n  const [isModalOpen, setIsModalOpen] = useState(false);\n  const [page, setPage] = useState(1);\n  const [loading, setLoading] = useState(true);\n  \n  // Fetch ads from API\n  useEffect(() => {\n    async function fetchAds() {\n      setLoading(true);\n      try {\n        const response = await fetch('/api/ads');\n        const data = await response.json();\n        setAds(data);\n        setFilteredAds(data);\n      } catch (error) {\n        console.error('Error fetching ads:', error);\n      } finally {\n        setLoading(false);\n      }\n    }\n    \n    fetchAds();\n  }, []);\n  \n  // Apply filters\n  useEffect(() => {\n    let result = [...ads];\n    \n    if (filters.competitor) {\n      result = result.filter(ad => ad.competitor_name === filters.competitor);\n    }\n    \n    if (filters.propertyType) {\n      result = result.filter(ad => ad.property_type === filters.propertyType);\n    }\n    \n    if (filters.region) {\n      result = result.filter(ad => ad.region === filters.region);\n    }\n    \n    if (filters.keyword) {\n      const keyword = filters.keyword.toLowerCase();\n      result = result.filter(ad => \n        ad.ad_text?.toLowerCase().includes(keyword)\n      );\n    }\n    \n    setFilteredAds(result);\n    setPage(1); // Reset to first page when filters change\n  }, [ads, filters]);\n  \n  const handleFilterChange = (e) => {\n    const { name, value } = e.target;\n    setFilters(prev => ({ ...prev, [name]: value }));\n  };\n  \n  const openAdDetail = (ad) => {\n    setSelectedAd(ad);\n    setIsModalOpen(true);\n  };\n  \n  // Pagination logic\n  const itemsPerPage = 12;\n  const totalPages = Math.ceil(filteredAds.length / itemsPerPage);\n  const paginatedAds = filteredAds.slice(\n    (page - 1) * itemsPerPage,\n    page * itemsPerPage\n  );\n  \n  return (\n    <div className=\"space-y-6\">\n      {/* Filter controls */}\n      <div className=\"grid grid-cols-1 md:grid-cols-4 gap-4\">\n        <Select\n          name=\"competitor\"\n          value={filters.competitor}\n          onChange={handleFilterChange}\n          placeholder=\"All Competitors\"\n          options={/* competitor options */}\n        />\n        <Select\n          name=\"propertyType\"\n          value={filters.propertyType}\n          onChange={handleFilterChange}\n          placeholder=\"All Property Types\"\n          options={/* property type options */}\n        />\n        <Select\n          name=\"region\"\n          value={filters.region}\n          onChange={handleFilterChange}\n          placeholder=\"All Regions\"\n          options={/* region options */}\n        />\n        <Input\n          name=\"keyword\"\n          value={filters.keyword}\n          onChange={handleFilterChange}\n          placeholder=\"Search ad text...\"\n        />\n      </div>\n      \n      {/* Gallery grid */}\n      {loading ? (\n        <div className=\"flex justify-center py-12\">\n          <Spinner />\n        </div>\n      ) : paginatedAds.length > 0 ? (\n        <div className=\"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4\">\n          {paginatedAds.map(ad => (\n            <AdCard \n              key={ad.id} \n              ad={ad} \n              onClick={() => openAdDetail(ad)} \n            />\n          ))}\n        </div>\n      ) : (\n        <div className=\"text-center py-12\">\n          <p>No ads found matching your filters.</p>\n        </div>\n      )}\n      \n      {/* Pagination controls */}\n      {totalPages > 1 && (\n        <div className=\"flex justify-center mt-6\">\n          <Button\n            onClick={() => setPage(p => Math.max(1, p - 1))}\n            disabled={page === 1}\n          >\n            Previous\n          </Button>\n          <span className=\"mx-4 self-center\">\n            Page {page} of {totalPages}\n          </span>\n          <Button\n            onClick={() => setPage(p => Math.min(totalPages, p + 1))}\n            disabled={page === totalPages}\n          >\n            Next\n          </Button>\n        </div>\n      )}\n      \n      {/* Detail modal */}\n      <AdDetailModal\n        isOpen={isModalOpen}\n        onClose={() => setIsModalOpen(false)}\n        ad={selectedAd}\n      />\n    </div>\n  );\n}\n```",
+        "testStrategy": "1. Test gallery rendering with different ad types (image, video)\n2. Verify filtering functionality works correctly\n3. Test keyword search accuracy\n4. Validate pagination works with large datasets\n5. Test modal detail view functionality\n6. Verify responsive design on different screen sizes\n7. Test image/video loading performance\n8. Validate sorting functionality",
+        "priority": "medium",
+        "dependencies": [
+          1,
+          3,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Core Gallery UI Components",
+            "description": "Create the basic UI components for the ad gallery including the grid layout, AdCard component, and container structure.",
+            "dependencies": [],
+            "details": "Develop the AdCard component to display ad thumbnails with basic information (competitor name, headline, thumbnail image). Implement the grid layout with responsive design using CSS Grid or Flexbox. Create placeholder states for loading and empty results. Focus on component structure and styling without implementing filtering or data fetching logic yet.",
+            "status": "pending",
+            "testStrategy": "Create visual tests for different screen sizes to ensure responsive behavior. Test with mock data to verify proper rendering of ad cards in various states."
+          },
+          {
+            "id": 2,
+            "title": "Build Filter Controls and State Management",
+            "description": "Implement the filter controls UI and state management for filtering ads by competitor, property type, region, and keywords.",
+            "dependencies": [
+              1
+            ],
+            "details": "Create Select and Input components for filters. Implement the filter state using React useState hooks. Set up the filter change handlers to update state. Create the useEffect hook to apply filters to the ad collection. Ensure the UI updates reactively when filters change. Don't implement the actual API integration yet, but prepare the filter logic to work with the data structure.",
+            "status": "pending",
+            "testStrategy": "Test filter combinations with mock data to ensure correct filtering behavior. Verify that UI updates properly when filters are applied or cleared."
+          },
+          {
+            "id": 3,
+            "title": "Implement Ad Detail Modal",
+            "description": "Create a modal component to display detailed information about a selected advertisement.",
+            "dependencies": [
+              1
+            ],
+            "details": "Build the AdDetailModal component with a responsive design. Include sections for displaying the full ad creative, metadata (date, platform, etc.), and engagement metrics. Implement open/close functionality with proper animations. Add navigation controls if there are multiple images/videos. Ensure the modal handles different media types (images, videos) appropriately.",
+            "status": "pending",
+            "testStrategy": "Test modal opening/closing behavior. Verify that all ad details display correctly for different ad types. Test keyboard navigation and accessibility."
+          },
+          {
+            "id": 4,
+            "title": "Integrate API and Data Fetching",
+            "description": "Connect the gallery to the backend API to fetch real ad data and implement error handling.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implement the useEffect hook to fetch ads from the API endpoint. Add loading states during data fetching. Implement error handling for API failures. Ensure the fetched data is properly formatted for the gallery components. Update the filter logic to work with the actual API data structure. Consider implementing debounced search for keyword filtering.",
+            "status": "pending",
+            "testStrategy": "Test API integration with different network conditions. Verify error states display correctly. Test with large datasets to ensure performance."
+          },
+          {
+            "id": 5,
+            "title": "Add Pagination and Sorting Features",
+            "description": "Implement pagination controls and sorting options for the ad gallery.",
+            "dependencies": [
+              4
+            ],
+            "details": "Build pagination UI controls with previous/next buttons and page indicators. Implement the pagination logic to slice the filtered results. Add sorting options (by date, engagement metrics, etc.) with appropriate UI controls. Ensure pagination resets when filters change. Optimize for performance with large datasets. Consider implementing infinite scroll as an alternative to traditional pagination.",
+            "status": "pending",
+            "testStrategy": "Test pagination with different dataset sizes. Verify page navigation works correctly. Test sorting functionality to ensure ads are ordered correctly. Verify that pagination state resets appropriately when filters change."
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Develop Price Detection and Alert System",
+        "description": "Create a system to detect price mentions in ad copy, track pricing trends, and send email notifications when competitors change pricing.",
+        "details": "1. Implement price detection algorithms for Portuguese real estate ad copy\n2. Create database schema for price data storage\n3. Develop price trend tracking functionality\n4. Implement email notification system\n5. Create alert preference configuration UI\n6. Set up regional filtering for Portuguese cities\n7. Implement price comparison logic\n\nExample price detection function:\n```javascript\n// utils/priceDetection.js\nfunction detectPrices(adText) {\n  if (!adText) return [];\n  \n  const prices = [];\n  \n  // Detect total prices (e.g., 250.000€, 250,000€, 250 000€)\n  const totalPriceRegex = /\\b(\\d{1,3}(?:[\\s.,]\\d{3})+)\\s*€\\b/g;\n  let match;\n  while ((match = totalPriceRegex.exec(adText)) !== null) {\n    const rawPrice = match[1];\n    // Normalize price by removing spaces and converting commas to dots\n    const normalizedPrice = rawPrice.replace(/\\s/g, '').replace(/,/g, '.');\n    prices.push({\n      type: 'total',\n      value: parseFloat(normalizedPrice),\n      currency: 'EUR',\n      raw: match[0]\n    });\n  }\n  \n  // Detect price per square meter (e.g., 2.500€/m², 2,500€/m²)\n  const pricePerMeterRegex = /\\b(\\d{1,3}(?:[\\s.,]\\d{3})*)\\s*€\\/m²\\b/gi;\n  while ((match = pricePerMeterRegex.exec(adText)) !== null) {\n    const rawPrice = match[1];\n    const normalizedPrice = rawPrice.replace(/\\s/g, '').replace(/,/g, '.');\n    prices.push({\n      type: 'per_sqm',\n      value: parseFloat(normalizedPrice),\n      currency: 'EUR',\n      unit: 'm²',\n      raw: match[0]\n    });\n  }\n  \n  // Detect rental prices (e.g., 1.200€/mês, 1,200€/month)\n  const rentalPriceRegex = /\\b(\\d{1,3}(?:[\\s.,]\\d{3})*)\\s*€\\/(mês|month)\\b/gi;\n  while ((match = rentalPriceRegex.exec(adText)) !== null) {\n    const rawPrice = match[1];\n    const normalizedPrice = rawPrice.replace(/\\s/g, '').replace(/,/g, '.');\n    prices.push({\n      type: 'rental',\n      value: parseFloat(normalizedPrice),\n      currency: 'EUR',\n      period: 'monthly',\n      raw: match[0]\n    });\n  }\n  \n  return prices;\n}\n\nmodule.exports = { detectPrices };\n```\n\nExample email notification system:\n```javascript\n// services/emailService.js\nconst nodemailer = require('nodemailer');\n\nclass EmailService {\n  constructor() {\n    this.transporter = nodemailer.createTransport({\n      host: process.env.SMTP_HOST,\n      port: process.env.SMTP_PORT,\n      secure: process.env.SMTP_SECURE === 'true',\n      auth: {\n        user: process.env.SMTP_USER,\n        pass: process.env.SMTP_PASSWORD\n      }\n    });\n  }\n  \n  async sendPriceAlert(user, priceData) {\n    const { email, name } = user;\n    const { competitor, propertyType, region, oldPrice, newPrice, percentChange, adLink } = priceData;\n    \n    const subject = `Price Alert: ${competitor} changed prices in ${region}`;\n    \n    const htmlContent = `\n      <h2>Price Change Alert</h2>\n      <p>Hello ${name},</p>\n      <p>We've detected a price change from one of your tracked competitors:</p>\n      <ul>\n        <li><strong>Competitor:</strong> ${competitor}</li>\n        <li><strong>Property Type:</strong> ${propertyType}</li>\n        <li><strong>Region:</strong> ${region}</li>\n        <li><strong>Old Price:</strong> ${oldPrice.toLocaleString('pt-PT')}€</li>\n        <li><strong>New Price:</strong> ${newPrice.toLocaleString('pt-PT')}€</li>\n        <li><strong>Change:</strong> ${percentChange > 0 ? '+' : ''}${percentChange.toFixed(2)}%</li>\n      </ul>\n      <p><a href=\"${adLink}\">View the advertisement</a></p>\n    `;\n    \n    try {\n      await this.transporter.sendMail({\n        from: `\"SpyPortuguês\" <${process.env.SMTP_FROM}>`,\n        to: email,\n        subject,\n        html: htmlContent\n      });\n      \n      return { success: true };\n    } catch (error) {\n      console.error('Failed to send email:', error);\n      return { success: false, error: error.message };\n    }\n  }\n}\n\nmodule.exports = new EmailService();\n```",
+        "testStrategy": "1. Test price detection algorithm with various Portuguese price formats\n2. Verify price extraction accuracy from ad copy\n3. Test email notification delivery\n4. Validate price trend tracking over time\n5. Test alert preferences configuration\n6. Verify regional filtering works correctly\n7. Test price comparison logic\n8. Validate database storage of price data",
+        "priority": "high",
+        "dependencies": [
+          3,
+          5,
+          6,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Enhance Price Detection Algorithm for Portuguese Real Estate",
+            "description": "Improve the existing price detection function to handle all Portuguese real estate pricing formats and edge cases.",
+            "dependencies": [],
+            "details": "Extend the detectPrices function in utils/priceDetection.js to handle additional Portuguese price formats. Add support for detecting price ranges (e.g., '250.000€-300.000€'), negotiable prices (e.g., 'desde 180.000€', 'a partir de 200.000€'), and other common Portuguese real estate pricing patterns. Implement robust error handling and validation. Create utility functions to normalize detected prices for consistent storage and comparison.",
+            "status": "pending",
+            "testStrategy": "Create unit tests with Jest using real-world Portuguese ad copy examples. Test edge cases like unusual formatting, multiple prices in the same ad, and mixed price types."
+          },
+          {
+            "id": 2,
+            "title": "Design and Implement Price Data Storage Schema",
+            "description": "Create a database schema to efficiently store, query, and track historical price data from real estate listings.",
+            "dependencies": [
+              1
+            ],
+            "details": "Design database tables for storing detected prices with fields for: price value, currency, price type (total, per_sqm, rental), property details (type, size, location), source information (competitor, ad ID, URL), and timestamps for tracking changes. Include indexes for efficient querying by location, price range, and competitor. Implement data access layer with functions for inserting new prices, updating existing records, and retrieving historical price data. Create migration scripts for database setup.",
+            "status": "pending",
+            "testStrategy": "Write integration tests to verify database operations. Test data insertion, retrieval, and update scenarios. Verify index performance for common query patterns."
+          },
+          {
+            "id": 3,
+            "title": "Develop Price Trend Analysis and Comparison Logic",
+            "description": "Create functionality to analyze price trends over time and detect significant changes in competitor pricing.",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement statistical analysis functions to calculate price trends by region, property type, and competitor. Create algorithms to detect significant price changes (percentage thresholds, sudden drops/increases). Develop comparison logic to identify price differences between competitors in the same region. Build aggregation functions for generating reports on pricing trends. Implement caching mechanisms for frequently accessed trend data to improve performance.",
+            "status": "pending",
+            "testStrategy": "Create unit tests for trend calculation logic. Use mock data to test various trend scenarios. Verify detection of price changes with different threshold configurations."
+          },
+          {
+            "id": 4,
+            "title": "Implement Email Notification System for Price Alerts",
+            "description": "Extend the email service to send customized price alerts based on user preferences and detected price changes.",
+            "dependencies": [
+              3
+            ],
+            "details": "Enhance the EmailService class to support different types of price alerts (daily summaries, immediate notifications for significant changes). Create email templates for different alert types with responsive design. Implement rate limiting to prevent excessive notifications. Add support for batching similar alerts into digest emails. Create a notification queue system to handle high volumes of alerts. Implement tracking of sent notifications to prevent duplicates.",
+            "status": "pending",
+            "testStrategy": "Create unit tests for email generation logic. Set up integration tests with a test SMTP server to verify email delivery. Test rate limiting and batching functionality."
+          },
+          {
+            "id": 5,
+            "title": "Build Alert Preference Configuration UI",
+            "description": "Create a user interface for configuring price alert preferences, including regional filters, price thresholds, and notification frequency.",
+            "dependencies": [
+              4
+            ],
+            "details": "Design and implement UI components for alert configuration: region selection dropdown with Portuguese cities, property type filters, price threshold sliders, notification frequency options (immediate, daily, weekly). Create form validation for user inputs. Implement API endpoints to save and retrieve user preferences. Add preview functionality to show example alerts based on current settings. Implement responsive design for mobile and desktop views.",
+            "status": "pending",
+            "testStrategy": "Write unit tests for UI components and form validation. Create integration tests for the complete alert configuration flow. Perform usability testing with sample users to verify the interface is intuitive."
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Implement TikTok and Instagram Content Scraping",
+        "description": "Develop a system to scrape and analyze competitor content from TikTok and Instagram, including both ads and organic posts.",
+        "details": "1. Set up Instagram Basic Display API integration\n2. Implement TikTok scraping using Puppeteer/Playwright\n3. Create content storage system in Supabase\n4. Develop engagement metrics tracking\n5. Implement content categorization\n6. Create background jobs for scheduled content collection\n7. Implement proxy rotation for scraping\n\nExample Instagram API integration:\n```javascript\n// lib/instagramApi.js\nconst axios = require('axios');\n\nclass InstagramApiClient {\n  constructor(accessToken) {\n    this.accessToken = accessToken;\n  }\n  \n  async getUserProfile(username) {\n    try {\n      const response = await axios.get(`https://graph.instagram.com/me`, {\n        params: {\n          fields: 'id,username,media_count',\n          access_token: this.accessToken\n        }\n      });\n      return response.data;\n    } catch (error) {\n      console.error('Error fetching Instagram profile:', error.response?.data || error.message);\n      throw error;\n    }\n  }\n  \n  async getUserMedia(limit = 10) {\n    try {\n      const response = await axios.get(`https://graph.instagram.com/me/media`, {\n        params: {\n          fields: 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username,children{media_url,media_type}',\n          limit,\n          access_token: this.accessToken\n        }\n      });\n      return response.data;\n    } catch (error) {\n      console.error('Error fetching Instagram media:', error.response?.data || error.message);\n      throw error;\n    }\n  }\n}\n\nmodule.exports = InstagramApiClient;\n```\n\nExample TikTok scraper:\n```javascript\n// scrapers/tiktokScraper.js\nconst playwright = require('playwright');\nconst { supabase } = require('../lib/supabase');\n\nasync function scrapeTikTokProfile(username) {\n  const browser = await playwright.chromium.launch({\n    headless: true\n  });\n  \n  try {\n    const context = await browser.newContext({\n      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'\n    });\n    \n    const page = await context.newPage();\n    await page.goto(`https://www.tiktok.com/@${username}`, {\n      waitUntil: 'networkidle'\n    });\n    \n    // Accept cookies if prompted\n    try {\n      await page.click('button:has-text(\"Accept\")').catch(() => {});\n    } catch (e) {\n      // Ignore if no cookie prompt\n    }\n    \n    // Wait for content to load\n    await page.waitForSelector('div[data-e2e=\"user-post-item\"]', { timeout: 10000 }).catch(() => {});\n    \n    // Extract videos\n    const videos = await page.evaluate(() => {\n      const videoItems = document.querySelectorAll('div[data-e2e=\"user-post-item\"]');\n      return Array.from(videoItems).map(item => {\n        const videoLink = item.querySelector('a')?.href;\n        const videoId = videoLink?.split('/video/')[1];\n        const thumbnailElement = item.querySelector('img');\n        const thumbnailUrl = thumbnailElement?.src;\n        const description = item.querySelector('[data-e2e=\"video-desc\"]')?.textContent;\n        \n        // Get engagement metrics\n        const likesElement = item.querySelector('[data-e2e=\"like-count\"]');\n        const likes = likesElement ? parseEngagementCount(likesElement.textContent) : 0;\n        \n        const commentsElement = item.querySelector('[data-e2e=\"comment-count\"]');\n        const comments = commentsElement ? parseEngagementCount(commentsElement.textContent) : 0;\n        \n        const sharesElement = item.querySelector('[data-e2e=\"share-count\"]');\n        const shares = sharesElement ? parseEngagementCount(sharesElement.textContent) : 0;\n        \n        return {\n          videoId,\n          videoUrl: videoLink,\n          thumbnailUrl,\n          description,\n          engagement: {\n            likes,\n            comments,\n            shares\n          }\n        };\n      });\n    });\n    \n    // Save videos to database\n    for (const video of videos) {\n      if (video.videoId) {\n        // Download thumbnail\n        if (video.thumbnailUrl) {\n          const response = await fetch(video.thumbnailUrl);\n          const imageBuffer = await response.arrayBuffer();\n          \n          // Upload to Supabase Storage\n          const { data, error } = await supabase.storage\n            .from('tiktok-thumbnails')\n            .upload(`${video.videoId}.jpg`, imageBuffer, {\n              contentType: 'image/jpeg'\n            });\n            \n          if (!error) {\n            video.storedThumbnailPath = data.path;\n          }\n        }\n        \n        // Save to database\n        await supabase.from('content').upsert({\n          platform: 'tiktok',\n          content_id: video.videoId,\n          content_url: video.videoUrl,\n          thumbnail_url: video.storedThumbnailPath,\n          description: video.description,\n          likes: video.engagement.likes,\n          comments: video.engagement.comments,\n          shares: video.engagement.shares,\n          username,\n          collected_at: new Date()\n        });\n      }\n    }\n    \n    return videos;\n  } finally {\n    await browser.close();\n  }\n}\n\n// Helper function to parse engagement counts (e.g., \"1.2K\" to 1200)\nfunction parseEngagementCount(text) {\n  if (!text) return 0;\n  \n  text = text.trim();\n  \n  if (text.endsWith('K')) {\n    return parseFloat(text.replace('K', '')) * 1000;\n  } else if (text.endsWith('M')) {\n    return parseFloat(text.replace('M', '')) * 1000000;\n  } else {\n    return parseInt(text, 10) || 0;\n  }\n}\n\nmodule.exports = { scrapeTikTokProfile };\n```",
+        "testStrategy": "1. Test Instagram API integration\n2. Verify TikTok scraping functionality\n3. Test content storage in Supabase\n4. Validate engagement metrics tracking\n5. Test content categorization accuracy\n6. Verify scheduled job execution\n7. Test proxy rotation functionality\n8. Validate error handling and retry logic",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          5,
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Instagram API Integration and Authentication",
+            "description": "Implement the Instagram Basic Display API integration with proper authentication flow to access user profiles and media content.",
+            "dependencies": [],
+            "details": "Create an InstagramApiClient class that handles authentication, token management, and API requests. Implement methods for fetching user profiles, media content, and engagement metrics. Set up proper error handling and rate limit management. Store API credentials securely using environment variables.",
+            "status": "pending",
+            "testStrategy": "Create unit tests with mocked API responses to verify authentication flow and data retrieval. Test error handling scenarios including rate limiting and invalid credentials."
+          },
+          {
+            "id": 2,
+            "title": "Implement TikTok Content Scraping with Playwright",
+            "description": "Develop a headless browser scraping solution using Playwright to extract content and engagement metrics from TikTok profiles.",
+            "dependencies": [],
+            "details": "Create a TikTokScraper class that navigates to profile pages, handles cookie consent, extracts video metadata, engagement metrics, and content details. Implement proxy rotation to avoid IP blocking. Add user-agent rotation and implement delays between requests to mimic human behavior. Include error recovery mechanisms for failed scraping attempts.",
+            "status": "pending",
+            "testStrategy": "Create integration tests with saved HTML snapshots to verify scraping logic without hitting TikTok servers. Test proxy rotation functionality and error recovery mechanisms."
+          },
+          {
+            "id": 3,
+            "title": "Design and Implement Content Storage System in Supabase",
+            "description": "Create a database schema and storage system in Supabase to store and organize scraped content from both platforms.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Design tables for content, engagement metrics, and content categorization. Set up Supabase storage buckets for media assets. Implement functions to store and retrieve content with proper indexing. Create database migrations for schema changes. Add data validation before storage to ensure consistency.",
+            "status": "pending",
+            "testStrategy": "Test database operations with sample data. Verify data integrity constraints and indexing performance. Test concurrent write operations to ensure data consistency."
+          },
+          {
+            "id": 4,
+            "title": "Develop Content Analysis and Categorization System",
+            "description": "Create a system to analyze and categorize scraped content based on engagement metrics, content type, and other attributes.",
+            "dependencies": [
+              3
+            ],
+            "details": "Implement algorithms to categorize content by type (ad vs. organic), topic, and engagement level. Create functions to calculate engagement rates and trending metrics. Develop a tagging system for content classification. Implement basic sentiment analysis for captions and comments. Store categorization results in the database with timestamps.",
+            "status": "pending",
+            "testStrategy": "Test categorization algorithms with diverse content samples. Verify engagement calculations against manual calculations. Test performance with large datasets."
+          },
+          {
+            "id": 5,
+            "title": "Implement Scheduled Content Collection with Background Jobs",
+            "description": "Create a background job system to regularly scrape content from both platforms on a schedule with proper logging and error handling.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Set up a job scheduler using a library like node-cron or Bull. Implement jobs for Instagram API polling and TikTok scraping with configurable intervals. Add comprehensive logging for job execution and errors. Implement retry mechanisms for failed jobs with exponential backoff. Create an admin interface to view job status and manually trigger jobs.",
+            "status": "pending",
+            "testStrategy": "Test job scheduling with accelerated time. Verify retry mechanisms by simulating failures. Test concurrent job execution to ensure system stability under load."
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Create Content Gallery and Performance Analysis Interface",
+        "description": "Build a user interface for browsing TikTok and Instagram content, analyzing engagement metrics, and identifying top-performing content.",
+        "details": "1. Design content gallery UI components\n2. Implement filtering and sorting functionality\n3. Create engagement metrics visualization\n4. Build content performance comparison tools\n5. Implement content type categorization\n6. Create detailed view for individual content items\n7. Develop benchmarking against competitors\n\nExample content gallery component:\n```tsx\n// components/ContentGallery.tsx\nimport { useState, useEffect } from 'react';\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';\nimport { Select, Input } from '@/components/ui';\nimport { ContentCard } from '@/components/ContentCard';\nimport { ContentDetailModal } from '@/components/ContentDetailModal';\nimport { EngagementChart } from '@/components/EngagementChart';\n\nexport function ContentGallery() {\n  const [content, setContent] = useState([]);\n  const [filteredContent, setFilteredContent] = useState([]);\n  const [filters, setFilters] = useState({\n    platform: 'all', // 'all', 'instagram', 'tiktok'\n    competitor: '',\n    sortBy: 'engagement', // 'engagement', 'date', 'likes'\n    keyword: ''\n  });\n  const [selectedContent, setSelectedContent] = useState(null);\n  const [isModalOpen, setIsModalOpen] = useState(false);\n  const [loading, setLoading] = useState(true);\n  \n  // Fetch content from API\n  useEffect(() => {\n    async function fetchContent() {\n      setLoading(true);\n      try {\n        const response = await fetch('/api/content');\n        const data = await response.json();\n        setContent(data);\n        setFilteredContent(data);\n      } catch (error) {\n        console.error('Error fetching content:', error);\n      } finally {\n        setLoading(false);\n      }\n    }\n    \n    fetchContent();\n  }, []);\n  \n  // Apply filters\n  useEffect(() => {\n    let result = [...content];\n    \n    if (filters.platform !== 'all') {\n      result = result.filter(item => item.platform === filters.platform);\n    }\n    \n    if (filters.competitor) {\n      result = result.filter(item => item.competitor_id === filters.competitor);\n    }\n    \n    if (filters.keyword) {\n      const keyword = filters.keyword.toLowerCase();\n      result = result.filter(item => \n        item.description?.toLowerCase().includes(keyword)\n      );\n    }\n    \n    // Apply sorting\n    result.sort((a, b) => {\n      switch (filters.sortBy) {\n        case 'engagement':\n          const engagementA = (a.likes || 0) + (a.comments || 0) + (a.shares || 0);\n          const engagementB = (b.likes || 0) + (b.comments || 0) + (b.shares || 0);\n          return engagementB - engagementA;\n        case 'date':\n          return new Date(b.collected_at) - new Date(a.collected_at);\n        case 'likes':\n          return (b.likes || 0) - (a.likes || 0);\n        default:\n          return 0;\n      }\n    });\n    \n    setFilteredContent(result);\n  }, [content, filters]);\n  \n  const handleFilterChange = (e) => {\n    const { name, value } = e.target;\n    setFilters(prev => ({ ...prev, [name]: value }));\n  };\n  \n  const openContentDetail = (item) => {\n    setSelectedContent(item);\n    setIsModalOpen(true);\n  };\n  \n  // Calculate top performers\n  const topPerformers = [...filteredContent]\n    .sort((a, b) => {\n      const engagementA = (a.likes || 0) + (a.comments || 0) + (a.shares || 0);\n      const engagementB = (b.likes || 0) + (b.comments || 0) + (b.shares || 0);\n      return engagementB - engagementA;\n    })\n    .slice(0, 5);\n  \n  return (\n    <div className=\"space-y-6\">\n      <Tabs defaultValue=\"gallery\">\n        <TabsList>\n          <TabsTrigger value=\"gallery\">Content Gallery</TabsTrigger>\n          <TabsTrigger value=\"analytics\">Performance Analytics</TabsTrigger>\n          <TabsTrigger value=\"top\">Top Performers</TabsTrigger>\n        </TabsList>\n        \n        <TabsContent value=\"gallery\" className=\"space-y-6\">\n          {/* Filter controls */}\n          <div className=\"grid grid-cols-1 md:grid-cols-4 gap-4\">\n            <Select\n              name=\"platform\"\n              value={filters.platform}\n              onChange={handleFilterChange}\n              options={[\n                { label: 'All Platforms', value: 'all' },\n                { label: 'Instagram', value: 'instagram' },\n                { label: 'TikTok', value: 'tiktok' }\n              ]}\n            />\n            <Select\n              name=\"competitor\"\n              value={filters.competitor}\n              onChange={handleFilterChange}\n              placeholder=\"All Competitors\"\n              options={/* competitor options */}\n            />\n            <Select\n              name=\"sortBy\"\n              value={filters.sortBy}\n              onChange={handleFilterChange}\n              options={[\n                { label: 'Highest Engagement', value: 'engagement' },\n                { label: 'Most Recent', value: 'date' },\n                { label: 'Most Likes', value: 'likes' }\n              ]}\n            />\n            <Input\n              name=\"keyword\"\n              value={filters.keyword}\n              onChange={handleFilterChange}\n              placeholder=\"Search content...\"\n            />\n          </div>\n          \n          {/* Content grid */}\n          {loading ? (\n            <div className=\"flex justify-center py-12\">\n              <Spinner />\n            </div>\n          ) : filteredContent.length > 0 ? (\n            <div className=\"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4\">\n              {filteredContent.map(item => (\n                <ContentCard \n                  key={`${item.platform}-${item.content_id}`} \n                  content={item} \n                  onClick={() => openContentDetail(item)} \n                />\n              ))}\n            </div>\n          ) : (\n            <div className=\"text-center py-12\">\n              <p>No content found matching your filters.</p>\n            </div>\n          )}\n        </TabsContent>\n        \n        <TabsContent value=\"analytics\">\n          <EngagementChart content={filteredContent} />\n        </TabsContent>\n        \n        <TabsContent value=\"top\">\n          <div className=\"space-y-4\">\n            <h3 className=\"text-xl font-bold\">Top Performing Content</h3>\n            {topPerformers.map((item, index) => (\n              <div key={`${item.platform}-${item.content_id}`} className=\"flex items-center p-4 border rounded-lg\">\n                <div className=\"font-bold text-2xl mr-4\">{index + 1}</div>\n                <div className=\"w-24 h-24 relative mr-4\">\n                  <img \n                    src={item.thumbnail_url} \n                    alt=\"Content thumbnail\" \n                    className=\"object-cover w-full h-full rounded\"\n                  />\n                </div>\n                <div className=\"flex-1\">\n                  <p className=\"font-medium\">{item.description?.substring(0, 100)}...</p>\n                  <div className=\"flex space-x-4 mt-2\">\n                    <span>❤️ {item.likes?.toLocaleString() || 0}</span>\n                    <span>💬 {item.comments?.toLocaleString() || 0}</span>\n                    <span>🔄 {item.shares?.toLocaleString() || 0}</span>\n                  </div>\n                </div>\n                <div>\n                  <Button onClick={() => openContentDetail(item)}>View</Button>\n                </div>\n              </div>\n            ))}\n          </div>\n        </TabsContent>\n      </Tabs>\n      \n      {/* Detail modal */}\n      <ContentDetailModal\n        isOpen={isModalOpen}\n        onClose={() => setIsModalOpen(false)}\n        content={selectedContent}\n      />\n    </div>\n  );\n}\n```",
+        "testStrategy": "1. Test content gallery rendering with different content types\n2. Verify filtering and sorting functionality\n3. Test engagement metrics visualization\n4. Validate performance comparison tools\n5. Test content type categorization\n6. Verify detailed view functionality\n7. Test benchmarking against competitors\n8. Validate responsive design on different screen sizes",
+        "priority": "medium",
+        "dependencies": [
+          1,
+          3,
+          11
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Content Gallery UI Components",
+            "description": "Create the core UI components for the content gallery, including the content card, gallery grid, and basic layout structure.",
+            "dependencies": [],
+            "details": "Develop the ContentCard component to display individual content items with thumbnails, basic metrics (likes, comments, shares), and platform indicators. Implement the gallery grid layout with responsive design for different screen sizes. Use the provided ContentGallery.tsx as a reference, but initially focus only on the basic display functionality without filtering or detailed views.",
+            "status": "pending",
+            "testStrategy": "Create component tests using React Testing Library to verify content cards render correctly with sample data and responsive layout adjusts appropriately to different viewport sizes."
+          },
+          {
+            "id": 2,
+            "title": "Build Content Filtering and Sorting System",
+            "description": "Implement the filtering and sorting functionality to allow users to narrow down content by platform, competitor, keywords, and sort by different engagement metrics.",
+            "dependencies": [
+              1
+            ],
+            "details": "Create filter controls (dropdowns, inputs) for platform selection, competitor filtering, and keyword search. Implement the filter logic in useEffect hooks to process the content array based on selected filters. Add sorting functionality for engagement metrics, date, and likes. Connect these filters to the content display to update the view dynamically when filters change.",
+            "status": "pending",
+            "testStrategy": "Test filter combinations to ensure they correctly filter the content array. Verify sorting functions correctly order content based on different metrics."
+          },
+          {
+            "id": 3,
+            "title": "Develop Content Detail Modal and Individual Content View",
+            "description": "Create a detailed view for individual content items that shows comprehensive metrics, content preview, and additional analysis when a user selects a specific content piece.",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement the ContentDetailModal component that displays when a user clicks on a content card. Include a media preview (video/image), full description, detailed engagement metrics, posting date, and platform-specific data. Add functionality to open/close the modal and populate it with the selected content's data. Include options to share or bookmark content items for later reference.",
+            "status": "pending",
+            "testStrategy": "Test modal opening/closing behavior and verify all content details display correctly. Test edge cases like missing data fields or unusually long descriptions."
+          },
+          {
+            "id": 4,
+            "title": "Create Engagement Metrics Visualization",
+            "description": "Develop data visualization components to display engagement metrics and performance trends across content items.",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement the EngagementChart component to visualize metrics like likes, comments, shares, and overall engagement. Create comparative charts to show performance across different platforms or competitors. Add time-based visualizations to track performance trends over time. Ensure charts are responsive and interactive, allowing users to hover for detailed information or click to filter the gallery based on chart selections.",
+            "status": "pending",
+            "testStrategy": "Test chart rendering with various data sets. Verify interactive features work correctly and charts respond appropriately to window resizing."
+          },
+          {
+            "id": 5,
+            "title": "Implement Top Performers and Benchmarking Features",
+            "description": "Build functionality to identify and display top-performing content and benchmark against competitors.",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Create the Top Performers tab that highlights the best-performing content based on engagement metrics. Implement algorithms to identify standout content across different categories (highest engagement rate, fastest growing, etc.). Add competitor benchmarking that compares performance against selected competitors. Include content type categorization to group similar content for more meaningful comparisons. Develop summary statistics and insights based on the analyzed data.",
+            "status": "pending",
+            "testStrategy": "Verify top performers are correctly identified based on different metrics. Test benchmarking calculations against known values to ensure accuracy."
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Build Dashboard and Analytics Interface",
+        "description": "Create a comprehensive dashboard with activity summaries, performance metrics, and data visualization components for competitor intelligence.",
+        "details": "1. Design dashboard layout and widgets\n2. Implement weekly competitor activity summaries\n3. Create top performing ads and content sections\n4. Build regional price comparison charts\n5. Implement notification center for alerts\n6. Create data visualization components\n7. Add customizable dashboard views\n\nExample dashboard component:\n```tsx\n// components/Dashboard.tsx\nimport { useState, useEffect } from 'react';\nimport { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';\nimport { Select } from '@/components/ui/select';\nimport { PriceChart } from '@/components/PriceChart';\nimport { ActivitySummary } from '@/components/ActivitySummary';\nimport { TopAdsWidget } from '@/components/TopAdsWidget';\nimport { TopContentWidget } from '@/components/TopContentWidget';\nimport { NotificationCenter } from '@/components/NotificationCenter';\n\nexport function Dashboard() {\n  const [dashboardData, setDashboardData] = useState(null);\n  const [selectedRegion, setSelectedRegion] = useState('Lisbon');\n  const [loading, setLoading] = useState(true);\n  \n  // Fetch dashboard data\n  useEffect(() => {\n    async function fetchDashboardData() {\n      setLoading(true);\n      try {\n        const response = await fetch('/api/dashboard');\n        const data = await response.json();\n        setDashboardData(data);\n      } catch (error) {\n        console.error('Error fetching dashboard data:', error);\n      } finally {\n        setLoading(false);\n      }\n    }\n    \n    fetchDashboardData();\n  }, []);\n  \n  if (loading) {\n    return (\n      <div className=\"flex justify-center items-center h-64\">\n        <Spinner />\n      </div>\n    );\n  }\n  \n  if (!dashboardData) {\n    return (\n      <div className=\"text-center py-12\">\n        <p>Failed to load dashboard data. Please try again later.</p>\n      </div>\n    );\n  }\n  \n  return (\n    <div className=\"space-y-6\">\n      <div className=\"flex justify-between items-center\">\n        <h2 className=\"text-3xl font-bold\">Dashboard</h2>\n        <Select\n          value={selectedRegion}\n          onChange={(e) => setSelectedRegion(e.target.value)}\n          options={[\n            { label: 'Lisbon', value: 'Lisbon' },\n            { label: 'Porto', value: 'Porto' },\n            { label: 'Algarve', value: 'Algarve' },\n            { label: 'Central Portugal', value: 'Central Portugal' },\n            { label: 'Northern Portugal', value: 'Northern Portugal' }\n          ]}\n        />\n      </div>\n      \n      {/* Activity summary */}\n      <Card>\n        <CardHeader>\n          <CardTitle>Weekly Activity Summary</CardTitle>\n        </CardHeader>\n        <CardContent>\n          <ActivitySummary data={dashboardData.activitySummary} />\n        </CardContent>\n      </Card>\n      \n      {/* Main dashboard content */}\n      <div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">\n        {/* Price trends */}\n        <Card>\n          <CardHeader>\n            <CardTitle>Price Trends - {selectedRegion}</CardTitle>\n          </CardHeader>\n          <CardContent>\n            <PriceChart \n              data={dashboardData.priceTrends.filter(item => item.region === selectedRegion)} \n            />\n          </CardContent>\n        </Card>\n        \n        {/* Notifications */}\n        <Card>\n          <CardHeader>\n            <CardTitle>Recent Alerts</CardTitle>\n          </CardHeader>\n          <CardContent>\n            <NotificationCenter notifications={dashboardData.notifications} />\n          </CardContent>\n        </Card>\n      </div>\n      \n      {/* Top performers */}\n      <Tabs defaultValue=\"ads\">\n        <TabsList>\n          <TabsTrigger value=\"ads\">Top Ads</TabsTrigger>\n          <TabsTrigger value=\"content\">Top Content</TabsTrigger>\n        </TabsList>\n        \n        <TabsContent value=\"ads\">\n          <Card>\n            <CardHeader>\n              <CardTitle>Top Performing Ads</CardTitle>\n            </CardHeader>\n            <CardContent>\n              <TopAdsWidget ads={dashboardData.topAds} />\n            </CardContent>\n          </Card>\n        </TabsContent>\n        \n        <TabsContent value=\"content\">\n          <Card>\n            <CardHeader>\n              <CardTitle>Top Performing Content</CardTitle>\n            </CardHeader>\n            <CardContent>\n              <TopContentWidget content={dashboardData.topContent} />\n            </CardContent>\n          </Card>\n        </TabsContent>\n      </Tabs>\n    </div>\n  );\n}\n```\n\nExample price chart component:\n```tsx\n// components/PriceChart.tsx\nimport { useEffect, useRef } from 'react';\nimport { Chart, registerables } from 'chart.js';\n\nChart.register(...registerables);\n\nexport function PriceChart({ data }) {\n  const chartRef = useRef(null);\n  const chartInstance = useRef(null);\n  \n  useEffect(() => {\n    if (!data || data.length === 0) return;\n    \n    // Prepare data for chart\n    const competitors = [...new Set(data.map(item => item.competitor))];\n    const dates = [...new Set(data.map(item => item.date))].sort((a, b) => new Date(a) - new Date(b));\n    \n    const datasets = competitors.map(competitor => {\n      const competitorData = data.filter(item => item.competitor === competitor);\n      const dataPoints = dates.map(date => {\n        const point = competitorData.find(item => item.date === date);\n        return point ? point.price : null;\n      });\n      \n      // Generate a color based on competitor name\n      const hue = Math.abs(competitor.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360);\n      const color = `hsl(${hue}, 70%, 50%)`;\n      \n      return {\n        label: competitor,\n        data: dataPoints,\n        borderColor: color,\n        backgroundColor: `${color}33`, // Add transparency\n        tension: 0.3\n      };\n    });\n    \n    // Format dates for display\n    const formattedDates = dates.map(date => {\n      const d = new Date(date);\n      return d.toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' });\n    });\n    \n    // Create or update chart\n    if (chartInstance.current) {\n      chartInstance.current.data.labels = formattedDates;\n      chartInstance.current.data.datasets = datasets;\n      chartInstance.current.update();\n    } else if (chartRef.current) {\n      chartInstance.current = new Chart(chartRef.current, {\n        type: 'line',\n        data: {\n          labels: formattedDates,\n          datasets\n        },\n        options: {\n          responsive: true,\n          plugins: {\n            legend: {\n              position: 'top',\n            },\n            tooltip: {\n              callbacks: {\n                label: function(context) {\n                  return `${context.dataset.label}: ${context.parsed.y.toLocaleString('pt-PT')}€`;\n                }\n              }\n            }\n          },\n          scales: {\n            y: {\n              beginAtZero: false,\n              ticks: {\n                callback: function(value) {\n                  return value.toLocaleString('pt-PT') + '€';\n                }\n              }\n            }\n          }\n        }\n      });\n    }\n    \n    // Cleanup\n    return () => {\n      if (chartInstance.current) {\n        chartInstance.current.destroy();\n        chartInstance.current = null;\n      }\n    };\n  }, [data]);\n  \n  return (\n    <div className=\"w-full h-80\">\n      <canvas ref={chartRef}></canvas>\n    </div>\n  );\n}\n```",
+        "testStrategy": "1. Test dashboard rendering with different data sets\n2. Verify activity summary calculations\n3. Test top performing ads and content sections\n4. Validate price comparison charts\n5. Test notification center functionality\n6. Verify data visualization components\n7. Test customizable dashboard views\n8. Validate responsive design on different screen sizes",
+        "priority": "medium",
+        "dependencies": [
+          8,
+          9,
+          10,
+          12
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Dashboard Layout and Core Components",
+            "description": "Implement the main dashboard layout structure and core UI components that will be used across all dashboard widgets.",
+            "dependencies": [],
+            "details": "Create the Dashboard.tsx component with the basic layout structure including the header, region selector, and responsive grid layout. Implement the loading and error states. Set up the data fetching mechanism using useEffect to retrieve dashboard data from the API. Create reusable Card components and establish the Tabs interface that will be used for switching between different views.",
+            "status": "pending",
+            "testStrategy": "Test the layout responsiveness across different screen sizes. Verify loading and error states render correctly. Mock API responses to test data fetching behavior."
+          },
+          {
+            "id": 2,
+            "title": "Implement Activity Summary and Notification Center",
+            "description": "Build the weekly activity summary widget and notification center for alerts that display recent competitor activities and important alerts.",
+            "dependencies": [
+              1
+            ],
+            "details": "Create the ActivitySummary component to display weekly competitor activities with metrics and trends. Implement the NotificationCenter component to show recent alerts and notifications with appropriate styling for different alert types (warning, info, critical). Both components should accept data props from the parent Dashboard component and handle empty states gracefully.",
+            "status": "pending",
+            "testStrategy": "Test rendering with various data scenarios including empty data, multiple items, and different alert types. Verify correct formatting of dates and metrics."
+          },
+          {
+            "id": 3,
+            "title": "Develop Price Comparison Charts",
+            "description": "Create interactive price comparison charts that visualize competitor pricing data across different regions.",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement the PriceChart component using Chart.js to display price trends over time. The chart should update based on the selected region from the Dashboard component. Include proper formatting for currency values, tooltips for data points, and a legend for different competitors. Ensure the chart handles data updates efficiently by properly managing the chart instance lifecycle.",
+            "status": "pending",
+            "testStrategy": "Test chart rendering with different data sets. Verify chart updates correctly when region selection changes. Test edge cases like missing data points and ensure the chart handles them gracefully."
+          },
+          {
+            "id": 4,
+            "title": "Build Top Performing Ads and Content Widgets",
+            "description": "Implement the tabbed interface for displaying top performing ads and content with relevant metrics and visualizations.",
+            "dependencies": [
+              1
+            ],
+            "details": "Create the TopAdsWidget and TopContentWidget components that display lists of top performing items with their key metrics. Implement the tab switching functionality to toggle between ads and content views. Each item should display relevant metrics (impressions, clicks, engagement) and include visual indicators for performance trends. Add sorting options to allow users to sort by different metrics.",
+            "status": "pending",
+            "testStrategy": "Test tab switching functionality. Verify correct rendering of metrics and performance indicators. Test sorting functionality with different data sets."
+          },
+          {
+            "id": 5,
+            "title": "Implement Customizable Dashboard Views",
+            "description": "Add functionality to allow users to customize their dashboard view by selecting which widgets to display and their arrangement.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Extend the Dashboard component to support customizable views. Implement a settings panel that allows users to toggle visibility of different widgets and rearrange their order. Store user preferences in local storage to persist across sessions. Add a reset option to restore the default dashboard layout. Ensure the grid layout adjusts dynamically based on which widgets are visible.",
+            "status": "pending",
+            "testStrategy": "Test saving and loading user preferences. Verify widgets show/hide correctly based on settings. Test persistence across page reloads. Ensure the layout remains responsive when widgets are added or removed."
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Implement Error Tracking and Monitoring with Sentry",
+        "description": "Set up Sentry for error tracking and performance monitoring across the frontend and backend services.",
+        "details": "1. Create Sentry account and project\n2. Integrate Sentry SDK with Next.js frontend\n3. Integrate Sentry SDK with Express.js backend\n4. Configure error boundaries and error handling\n5. Set up performance monitoring\n6. Implement custom error context\n7. Configure alert notifications\n\nExample Sentry integration for Next.js:\n```javascript\n// next.config.js\nconst { withSentryConfig } = require('@sentry/nextjs');\n\nconst nextConfig = {\n  reactStrictMode: true,\n  // Other Next.js config\n};\n\nmodule.exports = withSentryConfig(\n  nextConfig,\n  {\n    // Sentry options\n    silent: process.env.NODE_ENV === 'production', // Suppresses source map upload logs during build\n    org: \"your-org\",\n    project: \"spy-portugues\",\n  },\n  {\n    // Upload source maps\n    widenClientFileUpload: true,\n    transpileClientSDK: true,\n    tunnelRoute: \"/monitoring\",\n    hideSourceMaps: true,\n    disableLogger: true,\n  }\n);\n```\n\nExample Sentry configuration files:\n```javascript\n// sentry.client.config.js\nimport * as Sentry from '@sentry/nextjs';\n\nSentry.init({\n  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: 1.0,\n  environment: process.env.NODE_ENV,\n  integrations: [\n    new Sentry.BrowserTracing({\n      // Set sampling based on route\n      tracingOrigins: ['localhost', 'spyportugues.com'],\n    }),\n  ],\n});\n```\n\n```javascript\n// sentry.server.config.js\nimport * as Sentry from '@sentry/nextjs';\n\nSentry.init({\n  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: 1.0,\n  environment: process.env.NODE_ENV,\n});\n```\n\nExample Sentry integration for Express.js backend:\n```javascript\n// app.js\nconst express = require('express');\nconst Sentry = require('@sentry/node');\nconst Tracing = require('@sentry/tracing');\n\nconst app = express();\n\n// Initialize Sentry\nSentry.init({\n  dsn: process.env.SENTRY_DSN,\n  integrations: [\n    // Enable HTTP calls tracing\n    new Sentry.Integrations.Http({ tracing: true }),\n    // Enable Express.js middleware tracing\n    new Tracing.Integrations.Express({ app }),\n  ],\n  tracesSampleRate: 1.0,\n  environment: process.env.NODE_ENV,\n});\n\n// RequestHandler creates a separate execution context\napp.use(Sentry.Handlers.requestHandler());\n// TracingHandler creates a trace for every incoming request\napp.use(Sentry.Handlers.tracingHandler());\n\n// Routes\napp.use('/api/competitors', require('./routes/competitors'));\n// Other routes\n\n// The error handler must be before any other error middleware and after all controllers\napp.use(Sentry.Handlers.errorHandler());\n\n// Optional fallthrough error handler\napp.use(function onError(err, req, res, next) {\n  // The error id is attached to `res.sentry`\n  res.statusCode = 500;\n  res.json({\n    error: 'Something went wrong',\n    errorId: res.sentry\n  });\n});\n\napp.listen(3000);\n```\n\nExample custom error boundary component:\n```tsx\n// components/ErrorBoundary.tsx\nimport { Component, ErrorInfo, ReactNode } from 'react';\nimport * as Sentry from '@sentry/nextjs';\n\ninterface Props {\n  children: ReactNode;\n  fallback?: ReactNode;\n}\n\ninterface State {\n  hasError: boolean;\n  error?: Error;\n}\n\nexport class ErrorBoundary extends Component<Props, State> {\n  constructor(props: Props) {\n    super(props);\n    this.state = { hasError: false };\n  }\n\n  static getDerivedStateFromError(error: Error): State {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {\n    Sentry.captureException(error, {\n      contexts: { react: { componentStack: errorInfo.componentStack } }\n    });\n  }\n\n  render(): ReactNode {\n    if (this.state.hasError) {\n      return this.props.fallback || (\n        <div className=\"p-6 bg-red-50 border border-red-200 rounded-lg\">\n          <h2 className=\"text-xl font-bold text-red-800\">Something went wrong</h2>\n          <p className=\"mt-2 text-red-600\">\n            We've been notified about this issue and will fix it as soon as possible.\n          </p>\n          <button\n            className=\"mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700\"\n            onClick={() => this.setState({ hasError: false })}\n          >\n            Try again\n          </button>\n        </div>\n      );\n    }\n\n    return this.props.children;\n  }\n}\n```",
+        "testStrategy": "1. Test error capturing in frontend\n2. Verify error capturing in backend\n3. Test performance monitoring\n4. Validate error boundaries work correctly\n5. Test custom error context\n6. Verify alert notifications are sent\n7. Test source map uploading\n8. Validate error grouping and prioritization",
+        "priority": "low",
+        "dependencies": [
+          1,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Sentry account and configure projects",
+            "description": "Create a Sentry account, set up separate projects for frontend and backend, and configure basic settings including environment variables.",
+            "dependencies": [],
+            "details": "1. Sign up for a Sentry account if not already available\n2. Create two projects: one for Next.js frontend and one for Express.js backend\n3. Note the DSN keys for both projects\n4. Add environment variables to both frontend (.env.local) and backend (.env) files:\n   - NEXT_PUBLIC_SENTRY_DSN for frontend\n   - SENTRY_DSN for backend\n5. Configure project settings including alert rules, team access, and basic notification settings",
+            "status": "pending",
+            "testStrategy": "Verify account creation and project setup by checking the Sentry dashboard. Confirm environment variables are properly set and accessible in both applications."
+          },
+          {
+            "id": 2,
+            "title": "Integrate Sentry SDK with Next.js frontend",
+            "description": "Install and configure Sentry SDK in the Next.js frontend application, including source map uploads and basic error tracking.",
+            "dependencies": [],
+            "details": "1. Install required packages: `npm install @sentry/nextjs`\n2. Create configuration files:\n   - next.config.js with Sentry configuration\n   - sentry.client.config.js for browser-side monitoring\n   - sentry.server.config.js for server-side monitoring\n3. Configure DSN, environment, and sampling rate\n4. Set up source map uploading for production builds\n5. Add Sentry initialization to _app.tsx\n6. Create a .sentryclirc file with auth token if needed",
+            "status": "pending",
+            "testStrategy": "Test by triggering a deliberate error in development mode and verifying it appears in the Sentry dashboard. Check that source maps are correctly uploaded during build process."
+          },
+          {
+            "id": 3,
+            "title": "Integrate Sentry SDK with Express.js backend",
+            "description": "Install and configure Sentry SDK in the Express.js backend application, including request handlers and error middleware.",
+            "dependencies": [],
+            "details": "1. Install required packages: `npm install @sentry/node @sentry/tracing`\n2. Initialize Sentry at the top of the main application file (app.js/index.js)\n3. Add Sentry request handler middleware before route definitions\n4. Add Sentry tracing handler for performance monitoring\n5. Add Sentry error handler middleware after routes but before custom error handlers\n6. Implement a fallthrough error handler that includes the Sentry error ID\n7. Configure performance monitoring with appropriate sampling rates",
+            "status": "pending",
+            "testStrategy": "Test by triggering a deliberate error in an API endpoint and verifying it appears in the Sentry dashboard. Check that request data is properly captured and transaction monitoring is working."
+          },
+          {
+            "id": 4,
+            "title": "Implement error boundaries and custom context",
+            "description": "Create React error boundaries to catch and report frontend errors, and implement custom context for both frontend and backend errors.",
+            "dependencies": [],
+            "details": "1. Create an ErrorBoundary component as shown in the example\n2. Wrap key sections of the application with the ErrorBoundary component\n3. Implement custom fallback UI for error states\n4. Add user context to Sentry in both frontend and backend:\n   - Frontend: `Sentry.setUser({ id, email, username })` when user logs in\n   - Backend: Add user info to Sentry scope in authentication middleware\n5. Add custom tags and context to errors for better filtering\n6. Implement breadcrumbs for important user actions to trace steps leading to errors",
+            "status": "pending",
+            "testStrategy": "Test error boundaries by triggering component errors and verifying they're caught and reported to Sentry. Verify user context is properly attached to error reports by checking the Sentry dashboard after triggering errors while logged in."
+          },
+          {
+            "id": 5,
+            "title": "Configure performance monitoring and alert notifications",
+            "description": "Set up performance monitoring for both frontend and backend, and configure alert rules and notification channels.",
+            "dependencies": [],
+            "details": "1. Enable performance monitoring in both frontend and backend Sentry configurations\n2. Configure transaction sampling rates appropriate for traffic volume\n3. Set up custom performance metrics for critical user journeys\n4. Create alert rules in Sentry dashboard:\n   - Error frequency alerts (e.g., >1% of sessions with errors)\n   - New error type alerts\n   - Performance degradation alerts\n5. Configure notification channels (email, Slack, etc.)\n6. Set up issue assignment rules for team members\n7. Create and document runbooks for common error scenarios",
+            "status": "pending",
+            "testStrategy": "Test performance monitoring by executing key user flows and verifying they appear as transactions in Sentry. Test alert rules by triggering conditions that should fire alerts and confirming notifications are received through configured channels."
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "Create Landing Page and User Onboarding Flow",
+        "description": "Design and implement the landing page and user onboarding flow, including competitor selection, regional preferences, and notification setup.",
+        "details": "1. Design landing page with product information\n2. Create multi-step onboarding wizard\n3. Implement competitor selection interface\n4. Build regional preferences configuration\n5. Create notification preferences setup\n6. Implement onboarding progress tracking\n7. Design welcome dashboard\n\nExample landing page component:\n```tsx\n// pages/index.tsx\nimport { Button } from '@/components/ui/button';\nimport { useAuth } from '@clerk/nextjs';\nimport Link from 'next/link';\nimport Image from 'next/image';\n\nexport default function LandingPage() {\n  const { isSignedIn } = useAuth();\n  \n  return (\n    <div className=\"min-h-screen\">\n      {/* Hero section */}\n      <section className=\"py-20 px-4 bg-gradient-to-b from-blue-50 to-white\">\n        <div className=\"container mx-auto max-w-6xl\">\n          <div className=\"flex flex-col md:flex-row items-center justify-between gap-12\">\n            <div className=\"md:w-1/2 space-y-6\">\n              <h1 className=\"text-4xl md:text-5xl font-bold text-gray-900\">\n                Competitor Intelligence for Portuguese Real Estate\n              </h1>\n              <p className=\"text-xl text-gray-700\">\n                Track competitor ads, monitor pricing trends, and analyze top-performing content across Meta platforms and TikTok.\n              </p>\n              <div className=\"pt-4\">\n                {isSignedIn ? (\n                  <Link href=\"/dashboard\">\n                    <Button size=\"lg\">Go to Dashboard</Button>\n                  </Link>\n                ) : (\n                  <Link href=\"/sign-up\">\n                    <Button size=\"lg\">Get Started</Button>\n                  </Link>\n                )}\n              </div>\n            </div>\n            <div className=\"md:w-1/2\">\n              <Image \n                src=\"/images/hero-image.png\" \n                alt=\"SpyPortuguês Dashboard\" \n                width={600} \n                height={400} \n                className=\"rounded-lg shadow-xl\"\n              />\n            </div>\n          </div>\n        </div>\n      </section>\n      \n      {/* Features section */}\n      <section className=\"py-20 px-4 bg-white\">\n        <div className=\"container mx-auto max-w-6xl\">\n          <h2 className=\"text-3xl font-bold text-center mb-12\">Key Features</h2>\n          <div className=\"grid grid-cols-1 md:grid-cols-3 gap-8\">\n            <FeatureCard \n              icon=\"📊\" \n              title=\"Meta Ad Tracking\" \n              description=\"Monitor competitors' Facebook and Instagram ads to stay ahead of their marketing strategies.\"\n            />\n            <FeatureCard \n              icon=\"💰\" \n              title=\"Price Alert System\" \n              description=\"Get notified when competitors change their pricing or launch new campaigns.\"\n            />\n            <FeatureCard \n              icon=\"🎬\" \n              title=\"Content Analysis\" \n              description=\"Analyze top-performing TikTok and Instagram content in the Portuguese real estate market.\"\n            />\n          </div>\n        </div>\n      </section>\n      \n      {/* Testimonials, pricing, etc. sections */}\n      \n      {/* Footer */}\n      <footer className=\"bg-gray-900 text-white py-12 px-4\">\n        <div className=\"container mx-auto max-w-6xl\">\n          {/* Footer content */}\n        </div>\n      </footer>\n    </div>\n  );\n}\n\nfunction FeatureCard({ icon, title, description }) {\n  return (\n    <div className=\"bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow\">\n      <div className=\"text-4xl mb-4\">{icon}</div>\n      <h3 className=\"text-xl font-bold mb-2\">{title}</h3>\n      <p className=\"text-gray-600\">{description}</p>\n    </div>\n  );\n}\n```\n\nExample onboarding wizard component:\n```tsx\n// components/OnboardingWizard.tsx\nimport { useState } from 'react';\nimport { useRouter } from 'next/router';\nimport { Button } from '@/components/ui/button';\nimport { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';\nimport { CompetitorSelection } from '@/components/onboarding/CompetitorSelection';\nimport { RegionalPreferences } from '@/components/onboarding/RegionalPreferences';\nimport { NotificationPreferences } from '@/components/onboarding/NotificationPreferences';\nimport { OnboardingComplete } from '@/components/onboarding/OnboardingComplete';\n\nconst steps = [\n  { id: 'competitors', title: 'Select Competitors' },\n  { id: 'regions', title: 'Regional Preferences' },\n  { id: 'notifications', title: 'Notification Setup' },\n  { id: 'complete', title: 'All Set!' }\n];\n\nexport function OnboardingWizard() {\n  const [currentStep, setCurrentStep] = useState(0);\n  const [onboardingData, setOnboardingData] = useState({\n    competitors: [],\n    regions: [],\n    propertyTypes: [],\n    notifications: {\n      email: true,\n      priceAlerts: true,\n      newAds: true,\n      contentAlerts: false\n    }\n  });\n  const router = useRouter();\n  \n  const handleNext = () => {\n    if (currentStep < steps.length - 1) {\n      setCurrentStep(currentStep + 1);\n    } else {\n      completeOnboarding();\n    }\n  };\n  \n  const handleBack = () => {\n    if (currentStep > 0) {\n      setCurrentStep(currentStep - 1);\n    }\n  };\n  \n  const updateOnboardingData = (stepId, data) => {\n    setOnboardingData(prev => ({\n      ...prev,\n      [stepId]: data\n    }));\n  };\n  \n  const completeOnboarding = async () => {\n    try {\n      // Save onboarding data to API\n      await fetch('/api/onboarding', {\n        method: 'POST',\n        headers: {\n          'Content-Type': 'application/json'\n        },\n        body: JSON.stringify(onboardingData)\n      });\n      \n      // Redirect to dashboard\n      router.push('/dashboard');\n    } catch (error) {\n      console.error('Error saving onboarding data:', error);\n    }\n  };\n  \n  // Render current step content\n  const renderStepContent = () => {\n    switch (steps[currentStep].id) {\n      case 'competitors':\n        return (\n          <CompetitorSelection\n            selectedCompetitors={onboardingData.competitors}\n            onChange={(competitors) => updateOnboardingData('competitors', competitors)}\n          />\n        );\n      case 'regions':\n        return (\n          <RegionalPreferences\n            selectedRegions={onboardingData.regions}\n            selectedPropertyTypes={onboardingData.propertyTypes}\n            onRegionsChange={(regions) => updateOnboardingData('regions', regions)}\n            onPropertyTypesChange={(types) => updateOnboardingData('propertyTypes', types)}\n          />\n        );\n      case 'notifications':\n        return (\n          <NotificationPreferences\n            preferences={onboardingData.notifications}\n            onChange={(notifications) => updateOnboardingData('notifications', notifications)}\n          />\n        );\n      case 'complete':\n        return (\n          <OnboardingComplete />\n        );\n      default:\n        return null;\n    }\n  };\n  \n  return (\n    <div className=\"max-w-3xl mx-auto py-12 px-4\">\n      {/* Progress indicator */}\n      <div className=\"mb-8\">\n        <div className=\"flex justify-between\">\n          {steps.map((step, index) => (\n            <div key={step.id} className=\"flex flex-col items-center\">\n              <div \n                className={`w-10 h-10 rounded-full flex items-center justify-center ${index <= currentStep ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}\n              >\n                {index < currentStep ? '✓' : index + 1}\n              </div>\n              <span className=\"text-sm mt-2\">{step.title}</span>\n            </div>\n          ))}\n        </div>\n        <div className=\"relative mt-2\">\n          <div className=\"absolute top-0 left-0 h-1 bg-gray-200 w-full\"></div>\n          <div \n            className=\"absolute top-0 left-0 h-1 bg-blue-600 transition-all duration-300\"\n            style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}\n          ></div>\n        </div>\n      </div>\n      \n      {/* Step content */}\n      <Card>\n        <CardHeader>\n          <CardTitle>{steps[currentStep].title}</CardTitle>\n        </CardHeader>\n        <CardContent>\n          {renderStepContent()}\n        </CardContent>\n        <CardFooter className=\"flex justify-between\">\n          <Button \n            variant=\"outline\" \n            onClick={handleBack}\n            disabled={currentStep === 0}\n          >\n            Back\n          </Button>\n          <Button onClick={handleNext}>\n            {currentStep < steps.length - 1 ? 'Next' : 'Complete Setup'}\n          </Button>\n        </CardFooter>\n      </Card>\n    </div>\n  );\n}\n```",
+        "testStrategy": "1. Test landing page rendering\n2. Verify onboarding flow navigation\n3. Test competitor selection functionality\n4. Validate regional preferences selection\n5. Test notification preferences setup\n6. Verify onboarding data is saved correctly\n7. Test responsive design on different screen sizes\n8. Validate user redirection after onboarding completion",
+        "priority": "high",
+        "dependencies": [
+          1,
+          2,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Landing Page with Hero and Features Sections",
+            "description": "Create the landing page with a compelling hero section and feature highlights to attract users to the product.",
+            "dependencies": [],
+            "details": "Use the provided example as a starting point. Implement the landing page in pages/index.tsx with responsive design. Include a hero section with a clear value proposition, call-to-action buttons (Get Started/Go to Dashboard based on auth state), and a features section highlighting key product benefits. Use Next.js Image component for optimized images and implement the FeatureCard component for displaying product capabilities.",
+            "status": "pending",
+            "testStrategy": "Test responsive behavior across different screen sizes. Verify that auth state correctly shows the appropriate CTA button. Ensure all images load properly with fallbacks."
+          },
+          {
+            "id": 2,
+            "title": "Build Multi-Step Onboarding Wizard Framework",
+            "description": "Create the core onboarding wizard component with step navigation, progress tracking, and layout structure.",
+            "dependencies": [],
+            "details": "Implement the OnboardingWizard component based on the provided example. Set up the wizard framework with step navigation (next/back buttons), progress indicator, and step content container. Create the state management for tracking current step and overall onboarding data. Implement the completeOnboarding function to save data and redirect users. Connect the wizard to the landing page's 'Get Started' button.",
+            "status": "pending",
+            "testStrategy": "Test navigation between steps, verify progress indicator updates correctly, and ensure the wizard maintains state between steps."
+          },
+          {
+            "id": 3,
+            "title": "Implement Competitor Selection Interface",
+            "description": "Create the first step of the onboarding process allowing users to select competitors to track.",
+            "dependencies": [],
+            "details": "Build the CompetitorSelection component that will be used in the first step of the wizard. Implement a searchable interface with checkboxes or cards for selecting competitors. Include popular Portuguese real estate companies as suggestions. Add the ability to enter custom competitors not in the predefined list. Ensure the component properly updates the parent onboardingData state when selections change.",
+            "status": "pending",
+            "testStrategy": "Test search functionality, selection/deselection of competitors, and verify the data is correctly passed back to the parent component."
+          },
+          {
+            "id": 4,
+            "title": "Develop Regional and Property Type Preferences",
+            "description": "Build the second step of the onboarding process for configuring regional preferences and property types.",
+            "dependencies": [],
+            "details": "Implement the RegionalPreferences component for the second wizard step. Create an interactive map or region selector for Portuguese regions/cities. Add property type selection with options like apartments, houses, commercial properties, etc. Include filters for price ranges and property sizes. Ensure both region and property type selections update the parent onboardingData state correctly.",
+            "status": "pending",
+            "testStrategy": "Test region selection on the map/interface, verify multiple property types can be selected, and confirm data is properly passed to the parent component."
+          },
+          {
+            "id": 5,
+            "title": "Create Notification Setup and Completion Steps",
+            "description": "Implement the final steps of the onboarding process: notification preferences and completion confirmation.",
+            "dependencies": [],
+            "details": "Build the NotificationPreferences component with toggles for different notification types (email, price alerts, new ads, content alerts). Implement the OnboardingComplete component showing a success message and summary of selected preferences. Connect the API endpoint for saving onboarding data (/api/onboarding). Add animations or visual feedback to enhance the completion experience. Implement redirection to the dashboard after successful completion.",
+            "status": "pending",
+            "testStrategy": "Test toggling notification preferences, verify the API call is made with the correct payload on completion, and ensure successful redirection to the dashboard."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-06-18T10:29:53.675Z",
+      "updated": "2025-06-19T14:22:47.424Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

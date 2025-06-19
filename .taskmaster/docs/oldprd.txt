@@ -1,0 +1,227 @@
+<context>
+# Overview  
+SpyPortuguês is a specialized competitor intelligence platform designed exclusively for the Portuguese real estate market. It solves the critical problem of real estate professionals lacking visibility into their competitors' digital marketing strategies, pricing trends, and content performance across Meta platforms (Facebook/Instagram) and TikTok. The platform empowers real estate agents, agencies, and property developers to make data-driven decisions by providing comprehensive tracking of competitor advertisements, creative strategies, pricing movements, and social media performance. This intelligence enables users to optimize their own marketing campaigns, stay competitive with pricing, and identify successful content patterns in the Portuguese market.
+
+# Core Features  
+**Basic Meta Ad Tracking**
+- Automatically tracks and monitors competitors' active Facebook and Instagram advertisements in real-time
+- Captures and stores ad creatives (images, videos), ad copy, targeting information, and metadata
+- Records ad duration, first seen/last seen timestamps, and campaign lifecycle data
+- Important because it provides transparent visibility into competitor marketing strategies and spend patterns
+- Works by integrating with Meta Marketing API and automated scraping systems to continuously monitor specified competitor accounts
+
+**Competitor Creative Storage & Gallery**
+- Maintains organized digital gallery of all collected competitor advertisements and creatives
+- Provides advanced filtering capabilities by competitor name, property type, location, and campaign duration
+- Enables keyword-based search functionality across ad copy and creative descriptions
+- Essential for identifying successful creative patterns and maintaining competitive creative intelligence
+- Functions as centralized repository with intuitive browsing and discovery interface
+
+**TikTok & Instagram Content Competitor Analysis**
+- Scans and analyzes top-performing real estate content across TikTok and Instagram beyond just ads
+- Tracks organic posts, reels, stories, and user-generated content from competitor real estate accounts
+- Analyzes engagement metrics (likes, comments, shares, saves), hashtags, captions, and content themes
+- Provides performance benchmarking against competitors and identifies winning content strategies
+- Delivers actionable insights, trend alerts, and creative recommendations specifically for Portuguese real estate market
+- Critical for understanding full social media landscape beyond paid advertising
+
+**Essential Price Alert System**
+- Monitors competitor ad copy and landing pages for price mentions (€/m², total prices, price changes)
+- Sends real-time email notifications when competitors launch new campaigns or change pricing strategies
+- Includes regional filtering system for major Portuguese cities (Lisbon, Porto, Coimbra, Braga, Faro, etc.)
+- Tracks pricing trends over time and identifies market movements
+- Vital for maintaining competitive pricing and identifying market opportunities quickly
+
+**Minimal Dashboard & Analytics**
+- Provides weekly competitor activity summaries including ad volume, spend estimates, and campaign launches
+- Displays top 5 performing ads ranked by longevity, engagement, and estimated reach
+- Shows top 5 performing TikTok/Instagram organic content based on engagement metrics
+- Features basic regional price comparison charts and trend analysis
+- Offers exportable reports and data visualization for strategic decision-making
+
+**User Authentication & Management**
+- Implements Clerk for secure sign-up, sign-in, password reset, and comprehensive user profile management
+- Supports role-based access control with admin/user permissions and feature restrictions
+- Ensures secure session management and GDPR-compliant user data handling for Portuguese market
+- Includes subscription management, usage tracking, and account administration features
+
+# User Experience  
+**Primary User Personas:**
+- Real Estate Agents: Individual agents seeking competitive intelligence to improve their marketing and pricing strategies
+- Real Estate Agencies: Teams needing centralized competitor monitoring and market intelligence
+- Property Developers: Companies requiring market trend analysis and competitive positioning insights
+- Marketing Managers: Professionals managing real estate marketing campaigns and needing creative inspiration
+
+**Key User Flows:**
+1. **Onboarding Flow**: Sign up via Clerk → Select competitors to track → Configure regional preferences → Set up notification preferences
+2. **Daily Monitoring Flow**: Dashboard overview → Review new competitor ads → Check price alerts → Analyze trending content
+3. **Creative Research Flow**: Browse creative gallery → Filter by criteria → Save favorites → Export insights
+4. **Price Intelligence Flow**: View price alerts → Analyze regional trends → Export pricing reports
+5. **Content Strategy Flow**: Review top-performing content → Analyze engagement patterns → Identify trending hashtags/themes
+
+**UI/UX Considerations:**
+- Clean, professional interface using shadcn/ui components with Portuguese localization
+- Mobile-responsive design optimized for on-the-go real estate professionals
+- Intuitive filtering and search functionality with saved search capabilities
+- Visual-first approach for creative galleries with hover previews and detailed view modals
+- Dashboard widgets with customizable views and drag-and-drop organization
+- Export functionality for presentations and reports
+- Dark/light mode support with accessibility compliance
+</context>
+<PRD>
+# Technical Architecture  
+**System Components:**
+- **Frontend**: Next.js 14 with App Router, shadcn/ui component library, Tailwind CSS for styling
+- **Authentication**: Clerk for user management, authentication, and role-based access control
+- **Backend API**: Node.js with Express.js providing RESTful APIs and GraphQL endpoints
+- **Database**: PostgreSQL via Supabase for structured data storage and real-time subscriptions
+- **File Storage**: Supabase Storage for ad creatives, screenshots, and video assets
+- **Queue System**: BullMQ with Redis for background job processing and task scheduling
+- **Scraping Engine**: Puppeteer and Playwright for automated web scraping and content collection
+- **External APIs**: Meta Marketing API, Instagram Basic Display API, TikTok API (when available)
+
+**Data Models:**
+- **Users**: Profile data, subscription status, preferences, notification settings
+- **Competitors**: Company profiles, social media accounts, tracking configuration
+- **Ads**: Creative assets, metadata, targeting data, performance metrics, lifecycle tracking
+- **Content**: TikTok/Instagram posts, engagement data, hashtags, content analysis
+- **Prices**: Price mentions, regional data, historical trends, alert configurations
+- **Notifications**: Alert history, delivery status, user preferences
+
+**Infrastructure Requirements:**
+- **Hosting**: Vercel for frontend deployment with edge functions
+- **Backend Services**: Railway for API services and background workers
+- **Database**: Supabase PostgreSQL with connection pooling and read replicas
+- **CDN**: Vercel Edge Network for global content delivery
+- **Monitoring**: Sentry for error tracking and performance monitoring
+- **CI/CD**: GitHub Actions for automated testing and deployment
+
+# Development Roadmap  
+**Phase 1: Foundation & Authentication (MVP Core)**
+- Set up Next.js application with shadcn/ui and Tailwind CSS
+- Integrate Clerk authentication with user registration, login, and profile management
+- Create basic database schema and Supabase integration
+- Implement role-based access control and user permission system
+- Deploy basic application infrastructure on Vercel and Railway
+- Create landing page and basic dashboard shell
+
+**Phase 2: Meta Ad Tracking System**
+- Integrate Meta Marketing API for ad data collection
+- Build ad scraping system using Puppeteer for comprehensive ad monitoring
+- Create ad storage system with image/video handling via Supabase Storage
+- Implement background job system with BullMQ for scheduled ad collection
+- Build ad gallery interface with filtering and search capabilities
+- Create competitor management system for tracking configuration
+
+**Phase 3: Price Alert System**
+- Develop price detection algorithms for Portuguese real estate ad copy
+- Implement email notification system with customizable alert preferences
+- Create regional filtering system for major Portuguese cities
+- Build price trend tracking and historical data storage
+- Design price comparison dashboard with charts and analytics
+- Add export functionality for pricing reports
+
+**Phase 4: TikTok & Instagram Content Analysis**
+- Integrate Instagram Basic Display API and TikTok API connections
+- Build content scraping system for organic posts and performance data
+- Implement engagement metrics tracking and analysis algorithms
+- Create content gallery interface separate from paid ads
+- Build performance benchmarking system with competitor comparisons
+- Add trend analysis and content recommendation engine
+
+**Phase 5: Dashboard & Analytics**
+- Create comprehensive dashboard with activity summaries and performance metrics
+- Build top-performing content identification and ranking systems
+- Implement data visualization components for trends and analytics
+- Add export functionality for reports and presentations
+- Create notification center for alerts and system updates
+- Optimize performance and add caching for dashboard queries
+
+**Phase 6: Enhancement & Polish**
+- Add advanced filtering and search capabilities across all content types
+- Implement saved searches and custom dashboard widgets
+- Add collaborative features for team accounts and shared insights
+- Create mobile app or enhanced mobile web experience
+- Add advanced analytics with machine learning insights
+- Implement API access for enterprise customers
+
+# Logical Dependency Chain
+**Foundation Dependencies (Must be completed first):**
+1. Next.js application setup with shadcn/ui → Required for all frontend development
+2. Clerk authentication integration → Required for user-gated features
+3. Supabase database setup and basic schema → Required for data storage
+4. Basic deployment pipeline → Required for testing and iteration
+
+**Core Feature Dependencies (Build in sequence):**
+1. User management and authentication → Enables all user-specific features
+2. Competitor tracking system → Foundation for all monitoring features
+3. Meta ad tracking → Core value proposition, enables price alerts and dashboard
+4. Basic dashboard → Provides immediate user value and feedback loop
+5. Price alert system → Builds on ad tracking data
+6. Content analysis system → Independent but leverages existing scraping infrastructure
+
+**Quick User Value Chain (Prioritize for visible progress):**
+1. Authentication + basic dashboard shell → User can sign up and see interface
+2. Single competitor ad tracking → User can see competitor ads immediately
+3. Basic filtering and gallery → User can organize and browse collected data
+4. Email notifications → User receives value even when not actively using platform
+5. Price trend basic visualization → User sees actionable pricing intelligence
+
+**Atomic Feature Development (Each builds upon previous):**
+1. Single ad collection → Multiple competitor tracking → Bulk ad processing
+2. Basic price detection → Regional filtering → Historical trend analysis
+3. Simple dashboard → Advanced analytics → Custom reporting
+4. Manual competitor addition → Automated discovery → Bulk management tools
+
+# Risks and Mitigations  
+**Technical Challenges:**
+- **Risk**: Meta API rate limiting and access restrictions
+- **Mitigation**: Implement intelligent rate limiting, multiple API keys, and fallback scraping methods
+- **Risk**: Website anti-scraping measures and dynamic content loading
+- **Mitigation**: Use rotating proxies, user agent randomization, and headless browser optimization
+- **Risk**: Large file storage costs for creative assets
+- **Mitigation**: Implement image optimization, compression, and tiered storage with cleanup policies
+
+**MVP Definition and Scope:**
+- **Risk**: Feature creep preventing timely MVP delivery
+- **Mitigation**: Strict adherence to Phase 1-3 scope, user feedback-driven prioritization
+- **Risk**: Over-engineering initial features vs. getting to market quickly
+- **Mitigation**: Focus on core value proposition (ad tracking + price alerts), simple UI patterns
+
+**Market and Compliance Risks:**
+- **Risk**: GDPR compliance requirements for Portuguese market
+- **Mitigation**: Implement privacy-by-design, clear data retention policies, and user consent management
+- **Risk**: Competitor detection and potential blocking
+- **Mitigation**: Ethical scraping practices, respect for robots.txt, and transparent data collection
+
+**Resource and Technical Constraints:**
+- **Risk**: Database performance with large amounts of creative assets and historical data
+- **Mitigation**: Implement efficient indexing, data archiving strategies, and query optimization
+- **Risk**: Background job processing becoming bottleneck
+- **Mitigation**: Horizontal scaling of workers, job prioritization, and monitoring systems
+
+# Appendix  
+**Portuguese Market Research:**
+- Major real estate portals: Imovirtual, Casa Sapo, OLX, Remax Portugal, Century21 Portugal
+- Key geographic markets: Greater Lisbon, Greater Porto, Algarve, Central Portugal, Northern Portugal
+- Typical price formats: €/m², total price in euros, rental prices per month
+- Common property types: Apartamento, Moradia, Terreno, Escritório, Loja
+
+**Technical Specifications:**
+- Support for Portuguese language content detection and analysis
+- Integration with Portuguese postal code system for regional filtering
+- Currency detection and conversion (EUR primary, with historical rates)
+- Time zone handling for Portuguese Standard Time (WET/WEST)
+
+**API Rate Limits and Quotas:**
+- Meta Marketing API: 200 calls per hour per app
+- Instagram Basic Display API: 200 calls per hour per user
+- TikTok API: Variable based on partnership status
+- Planned scaling: Multiple API keys and distributed collection system
+
+**Data Retention Policies:**
+- Ad creatives: 2 years retention with archival options
+- Price data: Indefinite retention for trend analysis
+- User data: GDPR-compliant retention with user control
+- Analytics data: 5 years for business intelligence
+</PRD>

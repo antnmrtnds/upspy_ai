@@ -1,0 +1,63 @@
+{
+  "Navigation": {
+    "home": "Início",
+    "dashboard": "Painel",
+    "competitors": "Concorrentes",
+    "analytics": "Análises",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "logout": "Sair"
+  },
+  "Common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "search": "Pesquisar",
+    "filter": "Filtrar"
+  },
+  "Auth": {
+    "signIn": "Entrar",
+    "signUp": "Registar",
+    "signOut": "Sair",
+    "email": "Email",
+    "password": "Palavra-passe",
+    "forgotPassword": "Esqueceu a palavra-passe?",
+    "welcomeBack": "Bem-vindo de volta",
+    "createAccount": "Criar conta"
+  },
+  "RealEstate": {
+    "apartment": "Apartamento",
+    "house": "Moradia",
+    "land": "Terreno",
+    "office": "Escritório",
+    "shop": "Loja",
+    "pricePerSqm": "€/m²",
+    "totalPrice": "Preço total",
+    "monthlyRent": "Renda mensal"
+  },
+  "Competitors": {
+    "title": "Concorrentes",
+    "addCompetitor": "Adicionar Concorrente",
+    "name": "Nome",
+    "website": "Website",
+    "facebookUrl": "URL do Facebook",
+    "instagramUrl": "URL do Instagram",
+    "tiktokUrl": "URL do TikTok",
+    "regions": "Regiões",
+    "propertyTypes": "Tipos de Propriedade"
+  },
+  "Regions": {
+    "lisbon": "Lisboa",
+    "porto": "Porto",
+    "coimbra": "Coimbra",
+    "braga": "Braga",
+    "faro": "Faro",
+    "aveiro": "Aveiro",
+    "setubal": "Setúbal"
+  }
+}
