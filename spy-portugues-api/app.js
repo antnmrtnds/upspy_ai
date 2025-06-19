@@ -4,6 +4,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
+// Import custom logger
+const logger = require('./utils/logger');
+
+// Import Swagger documentation
+const { swaggerUi, specs } = require('./config/swagger');
+
 // Import Supabase connection test
 const { testConnection } = require('./lib/supabase');
 
@@ -32,8 +38,49 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Logging middleware
 app.use(morgan('combined'));
 
+// API Documentation with Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'SpyPortuguês API Documentation'
+}));
+
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check endpoint
+ *     description: Returns the current status of the API server
+ *     tags: [System]
+ *     responses:
+ *       200:
+ *         description: Server is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2024-01-01T00:00:00.000Z
+ *                 environment:
+ *                   type: string
+ *                   example: development
+ *                 version:
+ *                   type: string
+ *                   example: 1.0.0
+ */
 // Health check endpoint
 app.get('/health', (req, res) => {
+  logger.info('Health check accessed', { 
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('User-Agent')
+  });
+  
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),
@@ -59,29 +106,36 @@ const PORT = process.env.PORT || 3001;
 
 // Start server
 const server = app.listen(PORT, async () => {
+  logger.info(`SpyPortuguês API Server started`, {
+    port: PORT,
+    environment: process.env.NODE_ENV || 'development',
+    pid: process.pid
+  });
+  
   console.log(`🚀 SpyPortuguês API Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🏥 Health check: http://localhost:${PORT}/health`);
   console.log(`📖 API Base URL: http://localhost:${PORT}/api`);
+  console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
   
   // Test Supabase connection
-  console.log('🔄 Testing Supabase connection...');
+  logger.info('Testing Supabase connection...');
   await testConnection();
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+  logger.info('SIGTERM received, shutting down gracefully');
   server.close(() => {
-    console.log('Process terminated');
+    logger.info('Process terminated');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
+  logger.info('SIGINT received, shutting down gracefully');
   server.close(() => {
-    console.log('Process terminated');
+    logger.info('Process terminated');
     process.exit(0);
   });
 });

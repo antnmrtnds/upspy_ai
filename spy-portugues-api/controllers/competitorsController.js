@@ -1,6 +1,7 @@
 const { supabase } = require('../lib/supabase');
 const { asyncErrorHandler } = require('../middleware/errorHandler');
 const { NotFoundError, ValidationError, DatabaseError } = require('../utils/errors');
+const logger = require('../utils/logger');
 
 // Get all competitors with optional filtering
 const getCompetitors = asyncErrorHandler(async (req, res) => {
@@ -12,6 +13,11 @@ const getCompetitors = asyncErrorHandler(async (req, res) => {
     sort_by = 'created_at',
     sort_order = 'desc'
   } = req.query;
+
+  logger.info('Fetching competitors', {
+    filters: { limit, offset, active_only, search, sort_by, sort_order },
+    ip: req.ip
+  });
 
   let query = supabase
     .from('competitors')
@@ -35,8 +41,15 @@ const getCompetitors = asyncErrorHandler(async (req, res) => {
   const { data, error, count } = await query;
 
   if (error) {
+    logger.database('SELECT', 'competitors', { error: error.message, filters: { limit, offset, active_only, search } });
     throw new DatabaseError('Failed to fetch competitors', error);
   }
+
+  logger.database('SELECT', 'competitors', { 
+    count: data?.length || 0, 
+    total: count,
+    filters: { limit, offset, active_only, search }
+  });
 
   res.json({
     data,

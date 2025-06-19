@@ -1,4 +1,5 @@
 const { AppError } = require('../utils/errors');
+const logger = require('../utils/logger');
 
 // Development error response
 const sendErrorDev = (err, res) => {
@@ -30,7 +31,7 @@ const sendErrorProd = (err, res) => {
     });
   } else {
     // Programming or other unknown error: don't leak error details
-    console.error('ERROR:', err);
+    logger.error('Programming error', { error: err });
     res.status(500).json({
       error: {
         message: 'Something went wrong!',
@@ -113,6 +114,21 @@ const globalErrorHandler = (err, req, res, next) => {
   // Set default values
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
+
+  // Log the error with context
+  logger.error('Error occurred', {
+    error: err.message,
+    stack: err.stack,
+    statusCode: err.statusCode,
+    errorCode: err.errorCode,
+    url: req.originalUrl,
+    method: req.method,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('User-Agent'),
+    body: req.body,
+    params: req.params,
+    query: req.query
+  });
 
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
