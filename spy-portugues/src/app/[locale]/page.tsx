@@ -43,7 +43,7 @@ export default function HomePage() {
               <CardHeader>
                 <CardTitle>Monitorização de Concorrentes</CardTitle>
                 <CardDescription>
-                  Acompanhe os anúncios e preços dos seus concorrentes
+                  Acompanhe os anúncios e preços dos seus concorrentes!
                 </CardDescription>
               </CardHeader>
             </Card>
