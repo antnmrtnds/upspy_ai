@@ -5,8 +5,22 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 
-const regionOptions = ['lisbon','porto','coimbra','braga','faro','aveiro','setubal']
-const propertyTypeOptions = ['apartment','house','land','office','shop']
+export const regionOptions = [
+  'lisbon',
+  'porto',
+  'coimbra',
+  'braga',
+  'faro',
+  'aveiro',
+  'setubal',
+]
+export const propertyTypeOptions = [
+  'apartment',
+  'house',
+  'land',
+  'office',
+  'shop',
+]
 
 export interface CompetitorFormValues {
   name: string

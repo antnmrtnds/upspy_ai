@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Competitor } from "./competitor-card"
+import { regionOptions, propertyTypeOptions } from "./competitor-form"
 
 export function CompetitorList() {
   const [competitors, setCompetitors] = React.useState<Competitor[]>([])
@@ -27,6 +28,8 @@ export function CompetitorList() {
   const [error, setError] = React.useState<string | null>(null)
   const [query, setQuery] = React.useState("")
   const [sort, setSort] = React.useState("name-asc")
+  const [region, setRegion] = React.useState("all")
+  const [property, setProperty] = React.useState("all")
 
   React.useEffect(() => {
     async function load() {
@@ -45,16 +48,22 @@ export function CompetitorList() {
   }, [])
 
   const filtered = React.useMemo(() => {
-    const list = competitors.filter((c) =>
+    let list = competitors.filter((c) =>
       c.name.toLowerCase().includes(query.toLowerCase())
     )
+    if (region !== "all") {
+      list = list.filter((c) => c.regions?.includes(region))
+    }
+    if (property !== "all") {
+      list = list.filter((c) => c.property_types?.includes(property))
+    }
     list.sort((a, b) =>
       sort === "name-asc"
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name)
     )
     return list
-  }, [competitors, query, sort])
+  }, [competitors, query, sort, region, property])
 
   if (loading) {
     return <Skeleton data-testid="loading" className="h-24 w-full" />
@@ -88,6 +97,32 @@ export function CompetitorList() {
           <SelectContent>
             <SelectItem value="name-asc">A-Z</SelectItem>
             <SelectItem value="name-desc">Z-A</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={region} onValueChange={(v) => setRegion(v)}>
+          <SelectTrigger className="w-32">
+            <SelectValue placeholder="Região" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todas</SelectItem>
+            {regionOptions.map((r) => (
+              <SelectItem key={r} value={r}>
+                {r}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={property} onValueChange={(v) => setProperty(v)}>
+          <SelectTrigger className="w-36">
+            <SelectValue placeholder="Tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            {propertyTypeOptions.map((p) => (
+              <SelectItem key={p} value={p}>
+                {p}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
