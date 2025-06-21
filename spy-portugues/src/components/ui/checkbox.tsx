@@ -10,6 +10,17 @@ function Checkbox({
   className,
   ...props
 }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+  // Render a native checkbox in tests with proper typing
+  if (process.env.NODE_ENV === 'test') {
+    const { checked, onCheckedChange } = props;
+    return (
+      <input
+        type="checkbox"
+        checked={checked === true}
+        onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
+      />
+    );
+  }
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"

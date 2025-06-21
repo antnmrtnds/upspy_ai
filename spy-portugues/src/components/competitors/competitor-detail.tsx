@@ -3,7 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Competitor } from "./competitor-card"
+import type { Competitor } from "./types"
 
 export function CompetitorDetail({ competitor, onClose }: { competitor: Competitor; onClose?: () => void }) {
   return (

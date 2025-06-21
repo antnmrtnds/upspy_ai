@@ -5,14 +5,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export interface Competitor {
-  id: string
-  name: string
-  description?: string | null
-  website?: string | null
-  logo_url?: string | null
-}
+import type { Competitor } from "./types"
 
+export type { Competitor } from "./types"
 export function CompetitorCard({ competitor }: { competitor: Competitor }) {
   return (
     <Card className="w-full">

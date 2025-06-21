@@ -2,6 +2,8 @@ export interface Competitor {
     id: string
     user_id?: string
     name: string
+    description?: string
+    logo_url?: string
     website?: string
     facebook_url?: string
     instagram_url?: string
