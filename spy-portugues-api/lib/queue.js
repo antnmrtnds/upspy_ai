@@ -2,10 +2,11 @@ import { Queue } from 'bullmq';
 
 // Use a single Redis URL for connection, which is standard for most hosting providers.
 // This will be read from the REDIS_URL environment variable.
-const redisUrl = process.env.REDIS_URL;
+// Prefer an explicitly set external URL to override platform-injected variables
+const redisUrl = process.env.EXTERNAL_REDIS_URL || process.env.REDIS_URL;
 
 if (!redisUrl) {
-  console.error('REDIS_URL environment variable not set. BullMQ cannot connect.');
+  console.error('EXTERNAL_REDIS_URL or REDIS_URL environment variable not set. BullMQ cannot connect.');
 }
 
 export const adScraperQueue = new Queue('ad-scraping', {
