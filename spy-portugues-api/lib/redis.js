@@ -8,9 +8,9 @@ if (process.env.NODE_ENV === 'test') {
   redis = new IORedis();
 } else {
   // Prefer an explicitly set external URL to override platform-injected variables
-  const url = process.env.EXTERNAL_REDIS_URL || process.env.REDIS_URL;
+  const url = process.env.REDIS_URL;
   if (!url) {
-    throw new Error('Missing required environment variable: EXTERNAL_REDIS_URL or REDIS_URL');
+    throw new Error('Missing required environment variable: REDIS_URL');
   }
   redis = new IORedis(url);
 }
