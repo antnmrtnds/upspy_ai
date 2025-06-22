@@ -6,26 +6,50 @@ const requiredEnvVars = [
   'SUPABASE_SERVICE_ROLE_KEY'
 ];
 
-for (const envVar of requiredEnvVars) {
-  if (!process.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
+if (process.env.NODE_ENV !== 'test') {
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      throw new Error(`Missing required environment variable: ${envVar}`);
+    }
   }
 }
 
-// Create Supabase client with service role key for backend operations
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
+let supabase = null;
+if (process.env.NODE_ENV !== 'test') {
+  // Create Supabase client with service role key for backend operations
+  supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
     }
+  );
+} else {
+  // Simple mock for tests
+  class MockQuery {
+    select() { return this; }
+    eq() { return this; }
+    or() { return this; }
+    order() { return this; }
+    range() { return Promise.resolve({ data: [], error: null, count: 0 }); }
+    limit() { return this; }
+    insert() { return Promise.resolve({ data: {}, error: null }); }
+    single() { return Promise.resolve({ data: {}, error: null }); }
   }
-);
+
+  supabase = {
+    from: () => new MockQuery(),
+  };
+}
 
 // Test connection function
 const testConnection = async () => {
+  if (process.env.NODE_ENV === 'test') {
+    return true;
+  }
   try {
     const { data, error } = await supabase
       .from('competitors')

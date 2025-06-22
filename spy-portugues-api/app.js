@@ -13,6 +13,9 @@ const { swaggerUi, specs } = require('./config/swagger');
 // Import Supabase connection test
 const { testConnection } = require('./lib/supabase');
 
+// Import Redis connection
+const { redis, testConnection: testRedis } = require('./lib/redis');
+
 // Import error handling middleware
 const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
 
@@ -89,6 +92,38 @@ app.get('/health', (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /health/redis:
+ *   get:
+ *     summary: Redis health check
+ *     description: Verify connection to the Redis instance
+ *     tags: [System]
+ *     responses:
+ *       200:
+ *         description: Redis connection is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *       500:
+ *         description: Redis connection failed
+ */
+app.get('/health/redis', async (req, res) => {
+  try {
+    await redis.ping();
+    res.status(200).json({ status: 'OK' });
+  } catch (err) {
+    logger.error('Redis health check failed', { error: err });
+    res.status(500).json({ status: 'ERROR' });
+  }
+});
+
+
 // API routes (will be added in next subtask)
 app.use('/api/competitors', require('./routes/competitors'));
 app.use('/api/ads', require('./routes/ads'));
@@ -115,12 +150,16 @@ const server = app.listen(PORT, async () => {
   console.log(`🚀 SpyPortuguês API Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🏥 Health check: http://localhost:${PORT}/health`);
+  console.log(`🔄 Redis health: http://localhost:${PORT}/health/redis`);
   console.log(`📖 API Base URL: http://localhost:${PORT}/api`);
   console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
   
   // Test Supabase connection
   logger.info('Testing Supabase connection...');
   await testConnection();
+  // Test Redis connection
+  logger.info('Testing Redis connection...');
+  await testRedis();
 });
 
 // Graceful shutdown
