@@ -1,26 +1,18 @@
 const IORedis = process.env.NODE_ENV === 'test' ? require('ioredis-mock') : require('ioredis');
 const logger = require('../utils/logger');
 
-const requiredEnvVars = ['REDIS_HOST', 'REDIS_PORT'];
-if (process.env.NODE_ENV !== 'test') {
-  for (const envVar of requiredEnvVars) {
-    if (!process.env[envVar]) {
-      throw new Error(`Missing required environment variable: ${envVar}`);
-    }
+// Initialize Redis connection using a single REDIS_URL
+let redis;
+if (process.env.NODE_ENV === 'test') {
+  // In tests, use the mock without any network config
+  redis = new IORedis();
+} else {
+  const url = process.env.REDIS_URL;
+  if (!url) {
+    throw new Error('Missing required environment variable: REDIS_URL');
   }
+  redis = new IORedis(url);
 }
-
-const redisOptions = {
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT),
-  maxRetriesPerRequest: null,
-};
-
-if (process.env.REDIS_PASSWORD) {
-  redisOptions.password = process.env.REDIS_PASSWORD;
-}
-
-const redis = new IORedis(redisOptions);
 
 redis.on('connect', () => logger.info('Redis connected'));
 redis.on('error', (err) => logger.error('Redis connection error', { error: err }));
