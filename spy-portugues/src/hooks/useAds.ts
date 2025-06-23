@@ -38,8 +38,8 @@ export function useAds(
         sort_by: sortBy,
         sort_order: sortOrder
       });
-      // Use direct backend URL if provided, else fall back to Next.js proxy
-      const apiHost = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      // Use direct backend URL if provided, else proxy via Next.js route
+      const apiHost = process.env.NEXT_PUBLIC_API_URL;
       const fetchUrl = apiHost
         ? `${apiHost}/api/ads?${params.toString()}`
         : `/api/ads?${params.toString()}`;
