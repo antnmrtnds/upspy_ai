@@ -132,6 +132,7 @@ app.use('/api/ads', require('./routes/ads'));
 app.use('/api/content', require('./routes/content'));
 app.use('/api/prices', require('./routes/prices'));
 app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/competitors', require('./routes/scrape'));
 
 // Handle 404 routes
 app.use(handleNotFound);

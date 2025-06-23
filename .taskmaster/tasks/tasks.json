@@ -224,7 +224,7 @@
             "description": "Set up automated deployment of the frontend application to Vercel when tests pass on the main branch.",
             "dependencies": [],
             "details": "1. Create a Vercel project and connect it to the GitHub repository\n2. Generate Vercel deployment tokens and add them as GitHub secrets (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID)\n3. Configure the deployment job in the workflow file to deploy to Vercel after successful tests\n4. Set up preview deployments for pull requests\n5. Configure production deployment for the main branch",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Create a test PR to verify preview deployment, then merge to main to verify production deployment"
           },
           {
@@ -343,7 +343,7 @@
               1
             ],
             "details": "1. Create a 'queues' directory with separate files for each queue type\n2. Implement the adScraperQueue, contentCollectionQueue, and notificationQueue classes\n3. Define the basic worker structure for each queue with proper connection settings\n4. Implement standard event handlers (completed, failed, stalled) for all workers\n5. Create a queue registry module that exports all queues for easy access\n6. Set up proper graceful shutdown handling for workers",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test queue creation and basic job addition. Verify that workers can process simple jobs and that events are properly triggered."
           },
           {
@@ -393,7 +393,7 @@
           3,
           5
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -991,7 +991,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T10:29:53.675Z",
-      "updated": "2025-06-21T21:19:44.674Z",
+      "updated": "2025-06-23T10:12:21.561Z",
       "description": "Tasks for master context"
     }
   }

@@ -516,11 +516,30 @@ const notificationsValidation = {
   ]
 };
 
+// Scrape validation schemas
+const scrapeValidation = {
+  create: [
+    param('competitorId').isUUID().withMessage('Competitor ID must be a valid UUID'),
+    body('platforms')
+      .isArray({ min: 1 }).withMessage('Platforms must be an array with at least one platform')
+      .custom((value) => {
+        const validPlatforms = ['facebook', 'instagram', 'tiktok'];
+        if (value.some(p => !validPlatforms.includes(p))) {
+          throw new Error('Invalid platform provided. Must be one of: facebook, instagram, tiktok');
+        }
+        return true;
+      }),
+    body('options').optional().isObject().withMessage('Options must be an object'),
+    handleValidationErrors,
+  ],
+};
+
 module.exports = {
   competitorValidation,
   adsValidation,
   contentValidation,
   pricesValidation,
   notificationsValidation,
+  scrapeValidation,
   handleValidationErrors
 }; 
