@@ -1,6 +1,7 @@
 const adScraper = require('./adScraperQueue');
 const contentCollection = require('./contentCollectionQueue');
 const notification = require('./notificationQueue');
+const scheduler = require('./scheduler');
 
 const allWorkers = [
   adScraper.worker,
@@ -20,5 +21,6 @@ module.exports = {
   adScraperQueue: adScraper.queue,
   contentCollectionQueue: contentCollection.queue,
   notificationQueue: notification.queue,
+  scheduler,
   shutdownWorkers,
 };

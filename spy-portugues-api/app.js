@@ -17,7 +17,9 @@ const { testConnection } = require('./lib/supabase');
 // Import Redis connection
 const { redis, testConnection: testRedis } = require('./lib/redis');
 // Import BullMQ queues and worker shutdown helper
-const { shutdownWorkers } = require('./queues');
+const { shutdownWorkers, adScraperQueue, contentCollectionQueue } = require('./queues');
+// Scheduler utilities for recurring jobs
+const { scheduleJob } = require('./queues/scheduler');
 // Import error handling middleware
 const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
 
@@ -133,6 +135,7 @@ app.use('/api/content', require('./routes/content'));
 app.use('/api/prices', require('./routes/prices'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/competitors', require('./routes/scrape'));
+app.use('/api/jobs', require('./routes/jobs'));
 
 // Handle 404 routes
 app.use(handleNotFound);
@@ -164,6 +167,20 @@ const server = app.listen(PORT, async () => {
   logger.info('Testing Redis connection...');
   await testRedis();
 });
+
+  // Schedule recurring jobs with default cron patterns if not set
+  await scheduleJob(
+    adScraperQueue,
+    'scrape-all',
+    {},
+    process.env.AD_SCRAPE_CRON || '0 */6 * * *'
+  );
+  await scheduleJob(
+    contentCollectionQueue,
+    'collect-content',
+    {},
+    process.env.CONTENT_COLLECTION_CRON || '30 */6 * * *'
+  );
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

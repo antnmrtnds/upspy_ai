@@ -6,11 +6,11 @@ const createScrapeJob = async (req, res) => {
   const { platforms, options } = req.body;
 
   try {
-    const job = await adScraperQueue.add('scrape-competitor', {
-      competitorId,
-      platforms,
-      options,
-    });
+    const job = await adScraperQueue.add(
+      'scrape-competitor',
+      { competitorId, platforms, options },
+      { priority: 1 }
+    );
 
     logger.info(`Job added for competitor ${competitorId}`, { jobId: job.id });
 
@@ -29,11 +29,11 @@ const createTestScrapeJob = async (req, res) => {
   const { platforms, options } = req.body;
 
   try {
-    const job = await adScraperQueue.add('scrape-competitor-test', {
-      competitorId: testCompetitorId,
-      platforms,
-      options,
-    });
+    const job = await adScraperQueue.add(
+      'scrape-competitor-test',
+      { competitorId: testCompetitorId, platforms, options },
+      { priority: 5 }
+    );
 
     logger.info(`TEST job added for competitor ${testCompetitorId}`, { jobId: job.id });
 

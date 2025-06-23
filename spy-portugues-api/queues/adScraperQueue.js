@@ -7,10 +7,18 @@ const connection = redis;
 
 const queueName = 'ad-scraping';
 
-const queue = new Queue(queueName, { connection: {
-  url: process.env.REDIS_URL,
-  maxRetriesPerRequest: null,
-}});
+const queue = new Queue(queueName, {
+  connection,
+  defaultJobOptions: {
+    attempts: 5,
+    backoff: {
+      type: 'exponential',
+      delay: 1000,
+    },
+    removeOnComplete: 50,
+    removeOnFail: 100,
+  },
+});
 
 let worker;
 if (process.env.NODE_ENV !== 'test') {
@@ -41,13 +49,8 @@ if (process.env.NODE_ENV !== 'test') {
       }
     },
     {
-      connection: {
-        url: process.env.REDIS_URL,
-        maxRetriesPerRequest: null,
-      },
+      connection,
       concurrency: 3, // Process up to 3 scraping jobs concurrently
-      removeOnComplete: 50, // Keep last 50 completed jobs
-      removeOnFail: 100, // Keep last 100 failed jobs for debugging
     }
   );
 

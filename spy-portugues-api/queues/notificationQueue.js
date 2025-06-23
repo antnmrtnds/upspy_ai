@@ -7,10 +7,18 @@ const connection = redis;
 
 const queueName = 'notifications';
 
-const queue = new Queue(queueName, { connection: {
-  url: process.env.REDIS_URL,
-  maxRetriesPerRequest: null,
-}});
+const queue = new Queue(queueName, {
+  connection,
+  defaultJobOptions: {
+    attempts: 5,
+    backoff: {
+      type: 'exponential',
+      delay: 1000,
+    },
+    removeOnComplete: 100,
+    removeOnFail: 200,
+  },
+});
 
 let worker;
 if (process.env.NODE_ENV !== 'test') {
@@ -48,13 +56,8 @@ if (process.env.NODE_ENV !== 'test') {
       }
     },
     {
-      connection: {
-        url: process.env.REDIS_URL,
-        maxRetriesPerRequest: null,
-      },
+      connection,
       concurrency: 5, // Process up to 5 notification jobs concurrently
-      removeOnComplete: 100, // Keep last 100 completed jobs
-      removeOnFail: 200, // Keep last 200 failed jobs for debugging
     }
   );
 

@@ -7,10 +7,18 @@ const connection = redis;
 
 const queueName = 'content-collection';
 
-const queue = new Queue(queueName, { connection: {
-  url: process.env.REDIS_URL,
-  maxRetriesPerRequest: null,
-}});
+const queue = new Queue(queueName, {
+  connection,
+  defaultJobOptions: {
+    attempts: 5,
+    backoff: {
+      type: 'exponential',
+      delay: 1000,
+    },
+    removeOnComplete: 30,
+    removeOnFail: 50,
+  },
+});
 
 let worker;
 if (process.env.NODE_ENV !== 'test') {
@@ -41,13 +49,8 @@ if (process.env.NODE_ENV !== 'test') {
       }
     },
     {
-      connection: {
-        url: process.env.REDIS_URL,
-        maxRetriesPerRequest: null,
-      },
+      connection,
       concurrency: 2, // Process up to 2 content collection jobs concurrently
-      removeOnComplete: 30, // Keep last 30 completed jobs
-      removeOnFail: 50, // Keep last 50 failed jobs for debugging
     }
   );
 
