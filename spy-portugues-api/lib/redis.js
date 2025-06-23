@@ -12,7 +12,19 @@ if (process.env.NODE_ENV === 'test') {
   if (!url) {
     throw new Error('Missing required environment variable: REDIS_URL');
   }
-  redis = new IORedis(url);
+  
+  // Parse the URL to get connection options
+  const redisUrl = new URL(url);
+  redis = new IORedis({
+    host: redisUrl.hostname,
+    port: redisUrl.port,
+    password: redisUrl.password,
+    maxRetriesPerRequest: null, // Required by BullMQ
+    retryDelayOnFailover: 100,
+    enableReadyCheck: false,
+    maxRetriesPerRequest: null,
+    lazyConnect: true
+  });
 }
 
 redis.on('connect', () => logger.info('Redis connected'));
