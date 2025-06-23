@@ -1,6 +1,8 @@
 const os = require('os');
 const logger = require('../utils/logger');
-const { adScraperQueue, contentCollectionQueue, notificationQueue } = require('./index');
+const { queue: adScraperQueue } = require('./adScraperQueue');
+const { queue: contentCollectionQueue } = require('./contentCollectionQueue');
+const { queue: notificationQueue } = require('./notificationQueue');
 const { supabase } = require('../lib/supabase');
 
 /**

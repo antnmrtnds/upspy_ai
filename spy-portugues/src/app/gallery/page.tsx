@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AdGallery, EmptyGalleryState, FilteredAdGallery, Ad, GalleryFilters } from "@/components/ads"
 import AdDetailModal from "@/components/ads/AdDetailModal"
+import { useAds } from '../hooks/useAds'
 import { mockAds, emptyAds } from "@/components/ads/mockData"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,6 +18,7 @@ export default function GalleryDemoPage() {
     keyword: "",
     platform: "all"
   })
+  const { ads, loading, error, refetch } = useAds()
 
   const handleAdClick = (ad: Ad) => {
     setSelectedAd(ad)
@@ -30,6 +32,13 @@ export default function GalleryDemoPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
+      {/* Error state */}
+      {error && (
+        <div className="flex flex-col items-center text-red-600 space-y-2">
+          <p>Error loading ads: {error.message}</p>
+          <Button onClick={refetch}>Retry</Button>
+        </div>
+      )}
       <div className="text-center space-y-4">
         <h1 className="text-3xl font-bold">Ad Gallery Demo</h1>
         <p className="text-muted-foreground">
@@ -53,7 +62,8 @@ export default function GalleryDemoPage() {
             </CardHeader>
             <CardContent>
               <FilteredAdGallery 
-                ads={mockAds} 
+                ads={ads} 
+                loading={loading}
                 onAdClick={handleAdClick}
                 onFiltersChange={handleFiltersChange}
                 showFilters={true}
@@ -69,7 +79,8 @@ export default function GalleryDemoPage() {
             </CardHeader>
             <CardContent>
               <AdGallery 
-                ads={mockAds} 
+                ads={ads}
+                loading={loading}
                 onAdClick={handleAdClick}
               />
             </CardContent>
