@@ -86,7 +86,8 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
       - name: Clean up old Vercel linking
-        run: rm -rf spy-portugues/.vercel
+        run: rm -rf .vercel
+        working-directory: spy-portugues
       - name: Deploy to Vercel
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
