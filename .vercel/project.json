@@ -1,0 +1,3 @@
+{
+  "buildCommand": "cd spy-portugues && npm install && npm run build"
+} 
