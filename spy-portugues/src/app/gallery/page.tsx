@@ -66,38 +66,7 @@ export default function GalleryDemoPage() {
               <CardTitle>Filtered Gallery (Task 9.2)</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex-1">
-                  <FilteredAdGallery
-                    ads={ads}
-                    loading={loading}
-                    onAdClick={handleAdClick}
-                    onFiltersChange={handleFiltersChange}
-                    showFilters={true}
-                  />
-                </div>
-                <div className="ml-4 flex-shrink-0 flex flex-col space-y-2">
-                  <label htmlFor="sortBy" className="text-sm">Sort by:</label>
-                  <select
-                    id="sortBy"
-                    value={sortBy}
-                    onChange={e => setSortBy(e.target.value)}
-                    className="border rounded px-2 py-1 text-sm"
-                  >
-                    <option value="created_at">Date</option>
-                    <option value="engagement">Engagement</option>
-                  </select>
-                  <select
-                    value={sortOrder}
-                    onChange={e => setSortOrder(e.target.value as 'desc' | 'asc')}
-                    className="border rounded px-2 py-1 text-sm"
-                  >
-                    <option value="desc">Desc</option>
-                    <option value="asc">Asc</option>
-                  </select>
-                </div>
-              </div>
-              {/* Ads Grid */}
+              {/* Ads Grid with Filters */}
               <FilteredAdGallery
                 ads={ads}
                 loading={loading}

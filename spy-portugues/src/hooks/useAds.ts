@@ -38,7 +38,12 @@ export function useAds(
         sort_by: sortBy,
         sort_order: sortOrder
       });
-      const res = await fetch(`/api/ads?${params.toString()}`);
+      // Use direct backend URL if provided, else fall back to Next.js proxy
+      const apiHost = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const fetchUrl = apiHost
+        ? `${apiHost}/api/ads?${params.toString()}`
+        : `/api/ads?${params.toString()}`;
+      const res = await fetch(fetchUrl);
       if (!res.ok) throw new Error(`Failed to fetch ads: ${res.statusText}`);
       const json = await res.json();
       setAds(json.data);
