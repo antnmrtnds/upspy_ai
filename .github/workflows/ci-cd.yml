@@ -66,7 +66,6 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          WORKING_DIRECTORY: spy-portugues
 
   deploy-frontend:
     needs: [test-frontend, test-backend]
@@ -96,4 +95,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           PRODUCTION: true
-          WORKING_DIRECTORY: spy-portugues
+
+  deploy-backend:
+    needs: [test-backend]
