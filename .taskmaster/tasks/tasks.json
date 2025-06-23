@@ -365,7 +365,7 @@
               3
             ],
             "details": "1. Create a scheduler module to manage recurring jobs\n2. Implement functions to schedule jobs based on cron patterns\n3. Set up appropriate retry configurations for different job types (with backoff strategies)\n4. Create a mechanism to pause/resume job processing based on system load\n5. Implement job priority handling for critical vs. non-critical tasks\n6. Add functionality to manually trigger jobs outside of the regular schedule\n7. Ensure scheduled jobs don't duplicate if already in queue",
-            "status": "in-progress",
+            "status": "done",
             "testStrategy": "Test scheduling functionality by mocking time and verifying jobs are added at expected intervals. Test retry logic by forcing failures and verifying retry attempts occur with correct backoff."
           },
           {
@@ -991,7 +991,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T10:29:53.675Z",
-      "updated": "2025-06-23T13:45:21.334Z",
+      "updated": "2025-06-23T14:46:00.648Z",
       "description": "Tasks for master context"
     }
   }

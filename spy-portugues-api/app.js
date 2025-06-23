@@ -19,7 +19,7 @@ const { redis, testConnection: testRedis } = require('./lib/redis');
 // Import BullMQ queues and worker shutdown helper
 const { shutdownWorkers, adScraperQueue, contentCollectionQueue } = require('./queues');
 // Scheduler utilities for recurring jobs
-const { scheduleJob } = require('./queues/scheduler');
+const { scheduleJob, loadCompetitorSchedules } = require('./queues/scheduler');
 // Import error handling middleware
 const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
 
@@ -181,6 +181,9 @@ const server = app.listen(PORT, async () => {
     {},
     process.env.CONTENT_COLLECTION_CRON || '30 */6 * * *'
   );
+
+  // Schedule competitor-specific scraping jobs
+  await loadCompetitorSchedules();
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

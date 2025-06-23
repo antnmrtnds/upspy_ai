@@ -132,6 +132,11 @@ const options = {
               enum: ['active', 'inactive', 'monitoring'],
               example: 'active'
             },
+            schedule_cron: {
+              type: 'string',
+              example: '0 */6 * * *',
+              description: 'Cron expression for competitor-specific scraping'
+            },
             created_at: {
               type: 'string',
               format: 'date-time',

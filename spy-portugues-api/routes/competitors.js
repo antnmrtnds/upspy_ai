@@ -127,6 +127,10 @@ router.get('/:id/stats', competitorValidation.getById, getCompetitorStats);
  *                 enum: [active, inactive, monitoring]
  *                 default: active
  *                 description: Status of the competitor
+ *               schedule_cron:
+ *                 type: string
+ *                 description: Cron expression for scraping schedule
+ *                 example: "0 *\\/6 * * *"
  *     responses:
  *       201:
  *         description: Competitor created successfully

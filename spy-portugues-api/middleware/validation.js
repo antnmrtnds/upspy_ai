@@ -1,4 +1,5 @@
 const { body, param, query, validationResult } = require('express-validator');
+const cronParser = require('cron-parser');
 const { ValidationError } = require('../utils/errors');
 
 // Helper function to handle validation results
@@ -103,6 +104,19 @@ const competitorValidation = {
         }
         return true;
       }),
+      
+    body('schedule_cron')
+    .optional()
+    .isString()
+    .withMessage('Schedule cron must be a string')
+    .custom(value => {
+      try {
+        cronParser.parseExpression(value);
+        return true;
+      } catch {
+        throw new Error('Invalid cron expression');
+      }
+    }),
     
     handleValidationErrors
   ],
@@ -143,6 +157,21 @@ const competitorValidation = {
       .optional()
       .isArray()
       .withMessage('Property types must be an array'),
+
+      
+    body('schedule_cron')
+    .optional()
+    .isString()
+    .withMessage('Schedule cron must be a string')
+    .custom(value => {
+      try {
+        cronParser.parseExpression(value);
+        return true;
+      } catch {
+        throw new Error('Invalid cron expression');
+      }
+    }),
+
     
     handleValidationErrors
   ],

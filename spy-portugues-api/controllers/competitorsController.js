@@ -2,6 +2,8 @@ const { supabase } = require('../lib/supabase');
 const { asyncErrorHandler } = require('../middleware/errorHandler');
 const { NotFoundError, ValidationError, DatabaseError } = require('../utils/errors');
 const logger = require('../utils/logger');
+const { scheduleCompetitor } = require('../queues/scheduler');
+
 
 // Get all competitors with optional filtering
 const getCompetitors = asyncErrorHandler(async (req, res) => {
@@ -94,7 +96,8 @@ const createCompetitor = asyncErrorHandler(async (req, res) => {
     regions,
     property_types,
     is_active = true,
-    metadata = {}
+    metadata = {},
+    schedule_cron = '0 */6 * * *'
   } = req.body;
 
   const { data, error } = await supabase
@@ -110,7 +113,8 @@ const createCompetitor = asyncErrorHandler(async (req, res) => {
       regions,
       property_types,
       is_active,
-      metadata
+      metadata,
+      schedule_cron
     }])
     .select()
     .single();
@@ -119,9 +123,17 @@ const createCompetitor = asyncErrorHandler(async (req, res) => {
     throw new DatabaseError('Failed to create competitor', error);
   }
 
-  res.status(201).json({ 
+  if (schedule_cron) {
+    try {
+      await scheduleCompetitor(data.id, schedule_cron);
+    } catch (err) {
+      logger.error('Failed to schedule competitor', { error: err.message, competitorId: data.id });
+    }
+  }
+
+  res.status(201).json({
     message: 'Competitor created successfully',
-    data 
+    data
   });
 });
 
@@ -149,6 +161,15 @@ const updateCompetitor = asyncErrorHandler(async (req, res) => {
     }
     throw new DatabaseError('Failed to update competitor', error);
   }
+
+  if (updateData.schedule_cron) {
+    try {
+      await scheduleCompetitor(id, updateData.schedule_cron);
+    } catch (err) {
+      logger.error('Failed to reschedule competitor', { error: err.message, competitorId: id });
+    }
+  }
+
 
   res.json({ 
     message: 'Competitor updated successfully',

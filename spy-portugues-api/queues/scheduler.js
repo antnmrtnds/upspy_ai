@@ -1,6 +1,7 @@
 const os = require('os');
 const logger = require('../utils/logger');
 const { adScraperQueue, contentCollectionQueue, notificationQueue } = require('./index');
+const { supabase } = require('../lib/supabase');
 
 /**
  * Schedule a recurring job using a cron pattern.
@@ -11,6 +12,46 @@ const scheduleJob = async (queue, name, data, cron, jobId = `${name}:${cron}`, p
   await queue.add(name, data, options);
   logger.info('Scheduled recurring job', { queue: queue.name, name, cron, jobId });
 };
+
+const removeCompetitorSchedule = async (competitorId) => {
+  const repeatables = await adScraperQueue.getRepeatableJobs();
+  for (const job of repeatables) {
+    if (job.id === `scrape-competitor:${competitorId}`) {
+      await adScraperQueue.removeRepeatableByKey(job.key);
+      logger.info('Removed existing competitor schedule', { competitorId });
+    }
+  }
+};
+
+const scheduleCompetitor = async (competitorId, cron) => {
+  await removeCompetitorSchedule(competitorId);
+  await scheduleJob(
+    adScraperQueue,
+    'scrape-competitor',
+    { competitorId },
+    cron,
+    `scrape-competitor:${competitorId}`,
+    1
+  );
+};
+
+const loadCompetitorSchedules = async () => {
+  const { data, error } = await supabase
+    .from('competitors')
+    .select('id, schedule_cron')
+    .eq('is_active', true)
+    .not('schedule_cron', 'is', null);
+  if (error) {
+    logger.error('Failed to load competitor schedules', { error: error.message });
+    return;
+  }
+  for (const comp of data) {
+    if (comp.schedule_cron) {
+      await scheduleCompetitor(comp.id, comp.schedule_cron);
+    }
+  }
+};
+
 
 /**
  * Trigger a job immediately with optional priority.
@@ -58,4 +99,7 @@ module.exports = {
   triggerJob,
   startLoadMonitor,
   stopLoadMonitor,
+  scheduleCompetitor,
+  removeCompetitorSchedule,
+  loadCompetitorSchedules,
 };
