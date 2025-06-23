@@ -25,16 +25,11 @@ export default function LandingPage() {
           </p>
           <div className="mt-4 space-x-4">
             {isAuthenticated ? (
-              <Button asChild size="lg">
-                <Link href="/dashboard">Ir para o Dashboard</Link>
-              </Button>
+              <Button asChild size="lg"><Link href="/dashboard">Ir para o Dashboard</Link></Button>
             ) : (
               <>
-                <Button asChild size="lg">
-                <Link href="/onboarding">Começar Agora</Link>                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/sign-in">Entrar</Link>
-                </Button>
+                <Button asChild size="lg"><Link href="/onboarding">Começar Agora</Link></Button>
+                <Button asChild variant="outline" size="lg"><Link href="/sign-in">Entrar</Link></Button>
               </>
             )}
           </div>
