@@ -17,7 +17,7 @@ async function getProfileId(clerkId: string): Promise<string | null> {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const { userId } = await auth()
   if (!userId) {
@@ -29,7 +29,7 @@ export async function GET(
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
   }
 
-  const { id } = params
+  const { id } = context.params
   const { data, error } = await supabaseServer
     .from('competitors')
     .select('*')
@@ -49,7 +49,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const { userId } = await auth()
   if (!userId) {
@@ -62,7 +62,7 @@ export async function PUT(
   }
 
   const body = await request.json()
-  const { id } = params
+  const { id } = context.params
 
   const { data, error } = await supabaseServer
     .from('competitors')
@@ -82,7 +82,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const { userId } = await auth()
   if (!userId) {
@@ -94,7 +94,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
   }
 
-  const { id } = params
+  const { id } = context.params
 
   const { error } = await supabaseServer
     .from('competitors')

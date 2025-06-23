@@ -6,7 +6,10 @@ const connection = redis;
 
 const queueName = 'ad-scraping';
 
-const queue = new Queue(queueName, { connection });
+const queue = new Queue(queueName, { connection: {
+  url: process.env.REDIS_URL,
+  maxRetriesPerRequest: null,
+}});
 
 let worker;
 if (process.env.NODE_ENV !== 'test') {
@@ -16,7 +19,12 @@ if (process.env.NODE_ENV !== 'test') {
       logger.info('Processing ad scraping job', { jobId: job.id });
       return { success: true };
     },
-    { connection }
+    {
+      connection: {
+        url: process.env.REDIS_URL,
+        maxRetriesPerRequest: null,
+      }
+    }
   );
 
   worker.on('completed', job => logger.info('adScraper job completed', { jobId: job.id }));
