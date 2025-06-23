@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-  const { searchParams } = request.nextUrl
+  const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
   const limit = searchParams.get('limit') || '12'
   const sortBy = searchParams.get('sort_by') || 'created_at'

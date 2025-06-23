@@ -37,38 +37,6 @@ export default function GalleryDemoPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      {/* Pagination & Sorting Controls */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
-          <label htmlFor="sortBy" className="text-sm">Sort by:</label>
-          <select
-            id="sortBy"
-            value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
-            className="border rounded px-2 py-1 text-sm"
-          >
-            <option value="created_at">Date</option>
-            <option value="engagement">Engagement</option>
-          </select>
-          <select
-            value={sortOrder}
-            onChange={e => setSortOrder(e.target.value as 'desc' | 'asc')}
-            className="border rounded px-2 py-1 text-sm"
-          >
-            <option value="desc">Desc</option>
-            <option value="asc">Asc</option>
-          </select>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
-            Previous
-          </Button>
-          <span className="text-sm">Page {page} of {Math.ceil(pagination.total / pageSize)}</span>
-          <Button size="sm" onClick={() => setPage(p => p + 1)} disabled={page * pageSize >= pagination.total}>
-            Next
-          </Button>
-        </div>
-      </div>
       {/* Error state */}
       {error && (
         <div className="flex flex-col items-center text-red-600 space-y-2">
@@ -98,13 +66,55 @@ export default function GalleryDemoPage() {
               <CardTitle>Filtered Gallery (Task 9.2)</CardTitle>
             </CardHeader>
             <CardContent>
-              <FilteredAdGallery 
-                ads={ads} 
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex-1">
+                  <FilteredAdGallery
+                    ads={ads}
+                    loading={loading}
+                    onAdClick={handleAdClick}
+                    onFiltersChange={handleFiltersChange}
+                    showFilters={true}
+                  />
+                </div>
+                <div className="ml-4 flex-shrink-0 flex flex-col space-y-2">
+                  <label htmlFor="sortBy" className="text-sm">Sort by:</label>
+                  <select
+                    id="sortBy"
+                    value={sortBy}
+                    onChange={e => setSortBy(e.target.value)}
+                    className="border rounded px-2 py-1 text-sm"
+                  >
+                    <option value="created_at">Date</option>
+                    <option value="engagement">Engagement</option>
+                  </select>
+                  <select
+                    value={sortOrder}
+                    onChange={e => setSortOrder(e.target.value as 'desc' | 'asc')}
+                    className="border rounded px-2 py-1 text-sm"
+                  >
+                    <option value="desc">Desc</option>
+                    <option value="asc">Asc</option>
+                  </select>
+                </div>
+              </div>
+              {/* Ads Grid */}
+              <FilteredAdGallery
+                ads={ads}
                 loading={loading}
                 onAdClick={handleAdClick}
                 onFiltersChange={handleFiltersChange}
                 showFilters={true}
               />
+              {/* Pagination Controls */}
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+                  Previous
+                </Button>
+                <span className="text-sm">Page {page} of {Math.ceil(pagination.total / pageSize)}</span>
+                <Button size="sm" onClick={() => setPage(p => p + 1)} disabled={page * pageSize >= pagination.total}>
+                  Next
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -120,6 +130,15 @@ export default function GalleryDemoPage() {
                 loading={loading}
                 onAdClick={handleAdClick}
               />
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+                  Previous
+                </Button>
+                <span className="text-sm">Page {page} of {Math.ceil(pagination.total / pageSize)}</span>
+                <Button size="sm" onClick={() => setPage(p => p + 1)} disabled={page * pageSize >= pagination.total}>
+                  Next
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
