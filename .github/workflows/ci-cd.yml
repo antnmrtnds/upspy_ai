@@ -48,22 +48,17 @@ jobs:
         working-directory: spy-portugues
     steps:
       - uses: actions/checkout@v4
-      - name: Create Vercel Project Linking
-        run: |
-          mkdir -p .vercel
-          echo '{"orgId":"${{ secrets.VERCEL_ORG_ID }}","projectId":"${{ secrets.VERCEL_PROJECT_ID }}"}' > .vercel/project.json
-        working-directory: spy-portugues
       - name: Clean Vercel Linking
         run: rm -rf .vercel
         working-directory: spy-portugues
       - name: Deploy Preview to Vercel
-        uses: amondnet/vercel-action@v25
+        uses: vercel/vercel-action@v1
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          confirm: true
           working-directory: spy-portugues
-          vercel-args: '--confirm'
 
   deploy-frontend:
     needs: [test-frontend, test-backend]
@@ -77,10 +72,11 @@ jobs:
       - name: Clean up old Vercel linking
         run: rm -rf spy-portugues/.vercel
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
+        uses: vercel/vercel-action@v1
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod --confirm'
+          prod: true
+          confirm: true
           working-directory: spy-portugues
