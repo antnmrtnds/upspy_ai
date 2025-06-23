@@ -43,6 +43,8 @@ jobs:
     needs: [test-frontend, test-backend]
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
     defaults:
       run:
         working-directory: spy-portugues
@@ -64,6 +66,8 @@ jobs:
     needs: [test-frontend, test-backend]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
     defaults:
       run:
         working-directory: spy-portugues
