@@ -31,8 +31,7 @@ export default function LandingPage() {
             ) : (
               <>
                 <Button asChild size="lg">
-                  <Link href="/sign-up">Começar Agora</Link>
-                </Button>
+                <Link href="/onboarding">Começar Agora</Link>                </Button>
                 <Button asChild variant="outline" size="lg">
                   <Link href="/sign-in">Entrar</Link>
                 </Button>

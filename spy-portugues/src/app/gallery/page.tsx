@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { AdGallery, EmptyGalleryState, FilteredAdGallery, Ad, GalleryFilters } from "@/components/ads"
+import AdDetailModal from "@/components/ads/AdDetailModal"
 import { mockAds, emptyAds } from "@/components/ads/mockData"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -114,54 +115,12 @@ export default function GalleryDemoPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Selected Ad Display */}
+      {/* Task 9.3: Ad Detail Modal */}
       {selectedAd && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Selected Ad Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Basic Information</h3>
-                  <ul className="space-y-1 text-sm">
-                    <li><strong>ID:</strong> {selectedAd.id}</li>
-                    <li><strong>Competitor:</strong> {selectedAd.competitor_name}</li>
-                    <li><strong>Headline:</strong> {selectedAd.headline}</li>
-                    <li><strong>Platform:</strong> {selectedAd.platform}</li>
-                    <li><strong>Media Type:</strong> {selectedAd.media_type}</li>
-                    <li><strong>Property Type:</strong> {selectedAd.property_type}</li>
-                    <li><strong>Region:</strong> {selectedAd.region}</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Engagement</h3>
-                  {selectedAd.engagement && (
-                    <ul className="space-y-1 text-sm">
-                      <li><strong>Likes:</strong> {selectedAd.engagement.likes?.toLocaleString()}</li>
-                      <li><strong>Comments:</strong> {selectedAd.engagement.comments?.toLocaleString()}</li>
-                      <li><strong>Shares:</strong> {selectedAd.engagement.shares?.toLocaleString()}</li>
-                      <li><strong>Reactions:</strong> {selectedAd.engagement.reactions?.toLocaleString()}</li>
-                    </ul>
-                  )}
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Ad Text</h3>
-                <p className="text-sm text-muted-foreground">
-                  {selectedAd.ad_text}
-                </p>
-              </div>
-              <Button 
-                variant="outline" 
-                onClick={() => setSelectedAd(null)}
-              >
-                Clear Selection
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <AdDetailModal
+          ad={selectedAd}
+          onClose={() => setSelectedAd(null)}
+        />
       )}
 
       {/* Component Info */}

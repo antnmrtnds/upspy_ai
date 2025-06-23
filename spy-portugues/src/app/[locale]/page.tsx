@@ -30,7 +30,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8 space-x-4">
               <Button asChild size="lg">
-                <Link href="/sign-up">Começar Agora</Link>
+              <Link href="/onboarding">Começar Agora</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link href="/sign-in">Entrar</Link>
