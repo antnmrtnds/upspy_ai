@@ -50,6 +50,10 @@ jobs:
         working-directory: spy-portugues
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
       - name: Clean Vercel Linking
         run: rm -rf .vercel
         working-directory: spy-portugues
@@ -73,6 +77,10 @@ jobs:
         working-directory: spy-portugues
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
       - name: Clean up old Vercel linking
         run: rm -rf spy-portugues/.vercel
       - name: Deploy to Vercel
