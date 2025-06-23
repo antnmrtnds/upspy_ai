@@ -54,6 +54,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install Vercel CLI
+        run: npm install -g vercel
       - name: Clean Vercel Linking
         run: rm -rf .vercel
         working-directory: spy-portugues
@@ -81,6 +83,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install Vercel CLI
+        run: npm install -g vercel
       - name: Clean up old Vercel linking
         run: rm -rf spy-portugues/.vercel
       - name: Deploy to Vercel
