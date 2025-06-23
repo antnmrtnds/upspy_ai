@@ -166,7 +166,6 @@ const server = app.listen(PORT, async () => {
   // Test Redis connection
   logger.info('Testing Redis connection...');
   await testRedis();
-});
 
   // Schedule recurring jobs with default cron patterns if not set
   await scheduleJob(
@@ -184,6 +183,7 @@ const server = app.listen(PORT, async () => {
 
   // Schedule competitor-specific scraping jobs
   await loadCompetitorSchedules();
+});
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
