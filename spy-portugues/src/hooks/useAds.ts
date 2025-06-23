@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Ad } from '../../components/ads/types';
+import { Ad } from '../components/ads/types';
 
 export interface UseAdsResult {
   ads: Ad[];

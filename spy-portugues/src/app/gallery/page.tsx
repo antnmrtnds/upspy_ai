@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { AdGallery, EmptyGalleryState, FilteredAdGallery, Ad, GalleryFilters } from "@/components/ads"
 import AdDetailModal from "@/components/ads/AdDetailModal"
-import { useAds } from '../hooks/useAds'
+import { useAds } from '@/hooks/useAds'
 import { mockAds, emptyAds } from "@/components/ads/mockData"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
