@@ -29,6 +29,9 @@
     "npm": ">=8.0.0"
   },
   "dependencies": {
+    "@bull-board/api": "^6.10.1",
+    "@bull-board/express": "^6.10.1",
+    "@bull-board/ui": "^6.10.1",
     "@supabase/supabase-js": "^2.45.7",
     "bullmq": "^5.55.0",
     "cors": "^2.8.5",

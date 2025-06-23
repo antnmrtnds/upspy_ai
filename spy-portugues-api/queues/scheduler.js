@@ -63,7 +63,7 @@ const triggerJob = async (queue, name, data = {}, priority = 5) => {
 };
 
 let monitorInterval;
-
+let healthInterval;
 /**
  * Pause queues when system load is high and resume when it returns to normal.
  */
@@ -94,11 +94,45 @@ const stopLoadMonitor = () => {
   if (monitorInterval) clearInterval(monitorInterval);
 };
 
+const checkQueueHealth = async (backlog = 100, failures = 20) => {
+  const queues = [adScraperQueue, contentCollectionQueue, notificationQueue];
+  for (const q of queues) {
+    const counts = await q.getJobCounts('wait', 'failed');
+    if (counts.waiting > backlog) {
+      await notificationQueue.add('queue-alert', {
+        type: 'backlog',
+        queue: q.name,
+        waiting: counts.waiting,
+      });
+      logger.warn('Queue backlog alert', { queue: q.name, waiting: counts.waiting });
+    }
+    if (counts.failed > failures) {
+      await notificationQueue.add('queue-alert', {
+        type: 'failures',
+        queue: q.name,
+        failed: counts.failed,
+      });
+      logger.warn('Queue failure alert', { queue: q.name, failed: counts.failed });
+    }
+  }
+};
+
+const startQueueHealthMonitor = (interval = 60000, backlog, failures) => {
+  if (healthInterval) clearInterval(healthInterval);
+  healthInterval = setInterval(() => checkQueueHealth(backlog, failures), interval);
+};
+
+const stopQueueHealthMonitor = () => {
+  if (healthInterval) clearInterval(healthInterval);
+};
+
 module.exports = {
   scheduleJob,
   triggerJob,
   startLoadMonitor,
   stopLoadMonitor,
+  startQueueHealthMonitor,
+  stopQueueHealthMonitor,
   scheduleCompetitor,
   removeCompetitorSchedule,
   loadCompetitorSchedules,

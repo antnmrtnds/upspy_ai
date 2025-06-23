@@ -19,7 +19,14 @@ const { redis, testConnection: testRedis } = require('./lib/redis');
 // Import BullMQ queues and worker shutdown helper
 const { shutdownWorkers, adScraperQueue, contentCollectionQueue } = require('./queues');
 // Scheduler utilities for recurring jobs
-const { scheduleJob, loadCompetitorSchedules } = require('./queues/scheduler');
+const {
+  scheduleJob,
+  loadCompetitorSchedules,
+  startQueueHealthMonitor,
+} = require('./queues/scheduler');
+// Bull Board dashboard and admin endpoints
+const bullBoardRouter = require('./routes/bullBoard');
+const adminQueuesRouter = require('./routes/adminQueues');
 // Import error handling middleware
 const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
 
@@ -136,7 +143,9 @@ app.use('/api/prices', require('./routes/prices'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/competitors', require('./routes/scrape'));
 app.use('/api/jobs', require('./routes/jobs'));
-
+// Admin dashboard and queue controls
+app.use('/admin/queues', bullBoardRouter);
+app.use('/admin/queues/api', adminQueuesRouter);
 // Handle 404 routes
 app.use(handleNotFound);
 
@@ -146,7 +155,9 @@ app.use(globalErrorHandler);
 const PORT = process.env.PORT || 3001;
 
 // Start server
-const server = app.listen(PORT, async () => {
+let server;
+const startServer = async () => {
+  server = app.listen(PORT, async () => {
   logger.info(`SpyPortuguês API Server started`, {
     port: PORT,
     environment: process.env.NODE_ENV || 'development',
@@ -183,7 +194,16 @@ const server = app.listen(PORT, async () => {
 
   // Schedule competitor-specific scraping jobs
   await loadCompetitorSchedules();
-});
+
+  if (process.env.NODE_ENV !== 'test') {
+    startQueueHealthMonitor();
+  }
+ });
+};
+
+if (process.env.NODE_ENV !== 'test') {
+  startServer();
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
