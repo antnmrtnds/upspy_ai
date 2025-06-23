@@ -48,6 +48,11 @@ jobs:
         working-directory: spy-portugues
     steps:
       - uses: actions/checkout@v4
+      - name: Create Vercel Project Linking
+        run: |
+          mkdir -p .vercel
+          echo '{"orgId":"${{ secrets.VERCEL_ORG_ID }}","projectId":"${{ secrets.VERCEL_PROJECT_ID }}"}' > .vercel/project.json
+        working-directory: spy-portugues
       - name: Deploy Preview to Vercel
         uses: amondnet/vercel-action@v25
         with:
@@ -65,6 +70,11 @@ jobs:
         working-directory: spy-portugues
     steps:
       - uses: actions/checkout@v4
+      - name: Create Vercel Project Linking
+        run: |
+          mkdir -p .vercel
+          echo '{"orgId":"${{ secrets.VERCEL_ORG_ID }}","projectId":"${{ secrets.VERCEL_PROJECT_ID }}"}' > .vercel/project.json
+        working-directory: spy-portugues
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
