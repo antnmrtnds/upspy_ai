@@ -16,7 +16,8 @@ const { testConnection } = require('./lib/supabase');
 
 // Import Redis connection
 const { redis, testConnection: testRedis } = require('./lib/redis');
-
+// Import BullMQ queues and worker shutdown helper
+const { shutdownWorkers } = require('./queues');
 // Import error handling middleware
 const { globalErrorHandler, handleNotFound } = require('./middleware/errorHandler');
 
@@ -166,18 +167,26 @@ const server = app.listen(PORT, async () => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    logger.info('Process terminated');
-    process.exit(0);
-  });
+  shutdownWorkers()
+    .catch(err => logger.error('Error shutting down workers', { error: err }))
+    .finally(() => {
+      server.close(() => {
+        logger.info('Process terminated');
+        process.exit(0);
+      });
+    });
 });
 
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully');
-  server.close(() => {
-    logger.info('Process terminated');
-    process.exit(0);
-  });
+  shutdownWorkers()
+    .catch(err => logger.error('Error shutting down workers', { error: err }))
+    .finally(() => {
+      server.close(() => {
+        logger.info('Process terminated');
+        process.exit(0);
+      });
+    });
 });
 
 module.exports = app; 

@@ -1,0 +1,50 @@
+name: Automated Tests
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: spy-portugues/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: spy-portugues
+      - name: Run tests
+        run: npm test -- --coverage
+        working-directory: spy-portugues
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-coverage
+          path: spy-portugues/coverage
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: spy-portugues-api/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: spy-portugues-api
+      - name: Run tests
+        run: npm test -- --coverage
+        working-directory: spy-portugues-api
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-coverage
+          path: spy-portugues-api/coverage
