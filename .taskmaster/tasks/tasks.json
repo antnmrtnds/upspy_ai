@@ -532,7 +532,7 @@
             "description": "Create the basic UI components for the ad gallery including the grid layout, AdCard component, and container structure.",
             "dependencies": [],
             "details": "Develop the AdCard component to display ad thumbnails with basic information (competitor name, headline, thumbnail image). Implement the grid layout with responsive design using CSS Grid or Flexbox. Create placeholder states for loading and empty results. Focus on component structure and styling without implementing filtering or data fetching logic yet.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Create visual tests for different screen sizes to ensure responsive behavior. Test with mock data to verify proper rendering of ad cards in various states."
           },
           {
@@ -543,7 +543,7 @@
               1
             ],
             "details": "Create Select and Input components for filters. Implement the filter state using React useState hooks. Set up the filter change handlers to update state. Create the useEffect hook to apply filters to the ad collection. Ensure the UI updates reactively when filters change. Don't implement the actual API integration yet, but prepare the filter logic to work with the data structure.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test filter combinations with mock data to ensure correct filtering behavior. Verify that UI updates properly when filters are applied or cleared."
           },
           {
@@ -554,7 +554,7 @@
               1
             ],
             "details": "Build the AdDetailModal component with a responsive design. Include sections for displaying the full ad creative, metadata (date, platform, etc.), and engagement metrics. Implement open/close functionality with proper animations. Add navigation controls if there are multiple images/videos. Ensure the modal handles different media types (images, videos) appropriately.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test modal opening/closing behavior. Verify that all ad details display correctly for different ad types. Test keyboard navigation and accessibility."
           },
           {
@@ -577,7 +577,7 @@
               4
             ],
             "details": "Build pagination UI controls with previous/next buttons and page indicators. Implement the pagination logic to slice the filtered results. Add sorting options (by date, engagement metrics, etc.) with appropriate UI controls. Ensure pagination resets when filters change. Optimize for performance with large datasets. Consider implementing infinite scroll as an alternative to traditional pagination.",
-            "status": "pending",
+            "status": "in-progress",
             "testStrategy": "Test pagination with different dataset sizes. Verify page navigation works correctly. Test sorting functionality to ensure ads are ordered correctly. Verify that pagination state resets appropriately when filters change."
           }
         ]
@@ -939,7 +939,7 @@
           2,
           7
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -947,7 +947,7 @@
             "description": "Create the landing page with a compelling hero section and feature highlights to attract users to the product.",
             "dependencies": [],
             "details": "Use the provided example as a starting point. Implement the landing page in pages/index.tsx with responsive design. Include a hero section with a clear value proposition, call-to-action buttons (Get Started/Go to Dashboard based on auth state), and a features section highlighting key product benefits. Use Next.js Image component for optimized images and implement the FeatureCard component for displaying product capabilities.",
-            "status": "pending",
+            "status": "in-progress",
             "testStrategy": "Test responsive behavior across different screen sizes. Verify that auth state correctly shows the appropriate CTA button. Ensure all images load properly with fallbacks."
           },
           {
@@ -991,7 +991,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T10:29:53.675Z",
-      "updated": "2025-06-23T15:24:18.203Z",
+      "updated": "2025-06-23T20:28:04.885Z",
       "description": "Tasks for master context"
     }
   }

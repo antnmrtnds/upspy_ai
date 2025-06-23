@@ -18,7 +18,12 @@ export default function GalleryDemoPage() {
     keyword: "",
     platform: "all"
   })
-  const { ads, loading, error, refetch } = useAds()
+  // Pagination & sorting state
+  const [page, setPage] = useState(1)
+  const pageSize = 12
+  const [sortBy, setSortBy] = useState('created_at')
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc')
+  const { ads, loading, error, refetch, pagination } = useAds(page, pageSize, sortBy, sortOrder)
 
   const handleAdClick = (ad: Ad) => {
     setSelectedAd(ad)
@@ -32,6 +37,38 @@ export default function GalleryDemoPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
+      {/* Pagination & Sorting Controls */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <label htmlFor="sortBy" className="text-sm">Sort by:</label>
+          <select
+            id="sortBy"
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            className="border rounded px-2 py-1 text-sm"
+          >
+            <option value="created_at">Date</option>
+            <option value="engagement">Engagement</option>
+          </select>
+          <select
+            value={sortOrder}
+            onChange={e => setSortOrder(e.target.value as 'desc' | 'asc')}
+            className="border rounded px-2 py-1 text-sm"
+          >
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+            Previous
+          </Button>
+          <span className="text-sm">Page {page} of {Math.ceil(pagination.total / pageSize)}</span>
+          <Button size="sm" onClick={() => setPage(p => p + 1)} disabled={page * pageSize >= pagination.total}>
+            Next
+          </Button>
+        </div>
+      </div>
       {/* Error state */}
       {error && (
         <div className="flex flex-col items-center text-red-600 space-y-2">
