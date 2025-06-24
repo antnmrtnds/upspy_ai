@@ -1,1 +1,1 @@
-export * from './RegionalPreferences'
+export * from './RegionalPreference'
