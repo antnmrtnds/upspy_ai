@@ -524,7 +524,7 @@
           3,
           8
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -566,7 +566,7 @@
               2
             ],
             "details": "Implement the useEffect hook to fetch ads from the API endpoint. Add loading states during data fetching. Implement error handling for API failures. Ensure the fetched data is properly formatted for the gallery components. Update the filter logic to work with the actual API data structure. Consider implementing debounced search for keyword filtering.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test API integration with different network conditions. Verify error states display correctly. Test with large datasets to ensure performance."
           },
           {
@@ -577,7 +577,7 @@
               4
             ],
             "details": "Build pagination UI controls with previous/next buttons and page indicators. Implement the pagination logic to slice the filtered results. Add sorting options (by date, engagement metrics, etc.) with appropriate UI controls. Ensure pagination resets when filters change. Optimize for performance with large datasets. Consider implementing infinite scroll as an alternative to traditional pagination.",
-            "status": "in-progress",
+            "status": "done",
             "testStrategy": "Test pagination with different dataset sizes. Verify page navigation works correctly. Test sorting functionality to ensure ads are ordered correctly. Verify that pagination state resets appropriately when filters change."
           }
         ]
@@ -991,7 +991,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T10:29:53.675Z",
-      "updated": "2025-06-23T20:28:04.885Z",
+      "updated": "2025-06-24T07:48:48.307Z",
       "description": "Tasks for master context"
     }
   }
