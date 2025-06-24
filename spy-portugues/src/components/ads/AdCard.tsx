@@ -126,6 +126,7 @@ export function AdCard({ ad, onClick, className }: AdCardProps) {
               size="sm" 
               className="h-6 px-2 text-xs"
               onClick={(e) => {
+                e.preventDefault()
                 e.stopPropagation()
                 handleClick()
               }}

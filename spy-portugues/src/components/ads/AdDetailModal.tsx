@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';  // Assuming shadcn/ui is set up
@@ -6,13 +6,24 @@ import { Button } from '@/components/ui/button';  // Assuming shadcn/ui is set u
 import { Ad } from './types';  // Use component's Ad type
 
 const AdDetailModal = ({ ad, onClose }: { ad: Ad; onClose: () => void }) => {
-  const [isOpen, setIsOpen] = useState(true);
-
+  // Debug logging
+  console.log('AdDetailModal rendered with ad:', ad?.id, ad?.headline)
+  
+  // Safety check for ad data
+  if (!ad || !ad.id) {
+    console.error('AdDetailModal: Invalid ad data', ad)
+    onClose()
+    return null
+  }
+  
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root open={true} onOpenChange={(open) => { 
+      console.log('Modal open state changed:', open)
+      if (!open) onClose(); 
+    }}>
       <Dialog.Portal>
-        <Dialog.Overlay className='fixed inset-0 bg-black/50' />
-        <Dialog.Content className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg max-w-[90%] max-h-[90%] overflow-y-auto'>
+        <Dialog.Overlay className='fixed inset-0 bg-black/50 animate-in fade-in-0' />
+        <Dialog.Content className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg max-w-[90%] max-h-[90%] overflow-y-auto animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%]'>
           <Dialog.Title className='text-xl font-bold'>{ad.headline || 'Ad Details'}</Dialog.Title>
           <Dialog.Description asChild>
             <div>
@@ -40,7 +51,7 @@ const AdDetailModal = ({ ad, onClose }: { ad: Ad; onClose: () => void }) => {
                 <p><strong>Shares:</strong> {ad.engagement?.shares || 0}</p>
               </div>
               <Dialog.Close asChild>
-                <Button onClick={onClose} className='mt-4'>Close</Button>
+                <Button className='mt-4'>Close</Button>
               </Dialog.Close>
             </div>
           </Dialog.Description>

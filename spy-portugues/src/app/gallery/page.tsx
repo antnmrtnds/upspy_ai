@@ -26,8 +26,12 @@ export default function GalleryDemoPage() {
   const { ads, loading, error, refetch, pagination } = useAds(page, pageSize, sortBy, sortOrder)
 
   const handleAdClick = (ad: Ad) => {
-    setSelectedAd(ad)
+    if (!ad || !ad.id) {
+      console.error('Invalid ad data:', ad)
+      return
+    }
     console.log('Ad clicked:', ad)
+    setSelectedAd(ad)
   }
 
   const handleFiltersChange = (filters: GalleryFilters) => {
@@ -157,6 +161,7 @@ export default function GalleryDemoPage() {
       {/* Task 9.3: Ad Detail Modal */}
       {selectedAd && (
         <AdDetailModal
+          key={selectedAd.id}
           ad={selectedAd}
           onClose={() => setSelectedAd(null)}
         />
