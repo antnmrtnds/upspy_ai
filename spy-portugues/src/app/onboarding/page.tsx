@@ -1,10 +1,11 @@
 "use client"
 
 import { OnboardingWizard, StepDefinition } from "./onboardingWizard"
+import { RegionalPreferences } from "@/components/onboarding/RegionalPreferences"
 
 const steps: StepDefinition[] = [
   { title: "Competidores", element: <div>Selecionar concorrentes</div> },
-  { title: "Preferências", element: <div>Definir regiões e tipos</div> },
+  { title: "Preferências", element: <RegionalPreferences /> },
   { title: "Notificações", element: <div>Configurar notificações</div> },
 ]
 
