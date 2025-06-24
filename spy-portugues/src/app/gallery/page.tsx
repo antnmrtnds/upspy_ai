@@ -35,6 +35,9 @@ export default function GalleryDemoPage() {
     console.log('Filters changed:', filters)
   }
 
+  // Fallback to mock data if API returns no ads or errors
+  const filteredAdsToShow = (ads && ads.length > 0) ? ads : mockAds;
+
   return (
     <div className="container mx-auto py-8 space-y-8">
       {/* Error state */}
@@ -68,7 +71,7 @@ export default function GalleryDemoPage() {
             <CardContent>
               {/* Ads Grid with Filters */}
               <FilteredAdGallery
-                ads={ads}
+                ads={filteredAdsToShow}
                 loading={loading}
                 onAdClick={handleAdClick}
                 onFiltersChange={handleFiltersChange}
@@ -95,8 +98,8 @@ export default function GalleryDemoPage() {
             </CardHeader>
             <CardContent>
               <AdGallery 
-                ads={ads}
-                loading={loading}
+                ads={mockAds}
+                loading={false}
                 onAdClick={handleAdClick}
               />
               <div className="flex justify-end space-x-2 mt-4">
